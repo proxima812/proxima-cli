@@ -1,0 +1,16 @@
+export const TSCONFIG_TEMPLATE = `{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "strictNullChecks": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "exactOptionalPropertyTypes": false,
+    "allowJs": true,
+    "ignoreDeprecations": "6.0"
+  },
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["node_modules", ".vercel", ".netlify", "dist"]
+}
+`;

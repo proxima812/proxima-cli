@@ -1,0 +1,20 @@
+{
+  "name": "ui_proxima",
+  "version": "0.1.4",
+  "description": "CLI for bootstrapping Proxima UI in Astro projects",
+  "type": "module",
+  "bin": {
+    "ui_proxima": "./bin/ui_proxima.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "registry"
+  ],
+  "keywords": [
+    "astro",
+    "cli",
+    "ui"
+  ],
+  "license": "MIT"
+}

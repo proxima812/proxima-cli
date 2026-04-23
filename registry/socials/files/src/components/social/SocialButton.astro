@@ -1,0 +1,142 @@
+---
+import { cn } from "@/utils/lib/cn";
+import { resolveSocialName, socialIcons, type IconStyle } from "@/data/social-icons";
+
+type Variant = "solid" | "outline" | "ghost" | "soft";
+type Size = "sm" | "md" | "lg";
+type Shape = "rounded" | "pill" | "square";
+type IconPosition = "left" | "right";
+
+interface Props {
+	class?: string;
+	href: string;
+	title?: string;
+	aria_label?: string;
+	ariaLabel?: string;
+	social?: string;
+	variant?: Variant;
+	size?: Size;
+	shape?: Shape;
+	iconOnly?: boolean;
+	iconPosition?: IconPosition;
+	iconSize?: number;
+	iconStyle?: IconStyle;
+	fullWidth?: boolean;
+	external?: boolean;
+	target?: string;
+	rel?: string;
+	labelClass?: string;
+	iconClass?: string;
+}
+
+const variantClasses: Record<Variant, string> = {
+	solid: "border border-zinc-950 bg-zinc-950 text-white hover:bg-zinc-800 hover:border-zinc-800",
+	outline: "border border-zinc-300 bg-white text-zinc-950 hover:border-zinc-400 hover:bg-zinc-50",
+	ghost: "border border-transparent bg-transparent text-zinc-700 hover:bg-zinc-100 hover:text-zinc-950",
+	soft: "border border-zinc-200 bg-zinc-100 text-zinc-950 hover:border-zinc-300 hover:bg-zinc-200/70",
+};
+
+const sizeClasses: Record<Size, string> = {
+	sm: "h-9 px-3 text-sm gap-2",
+	md: "h-10 px-4 text-sm gap-2.5",
+	lg: "h-12 px-5 text-base gap-3",
+};
+
+const shapeClasses: Record<Shape, string> = {
+	rounded: "rounded-xl",
+	pill: "rounded-full",
+	square: "rounded-md",
+};
+
+const iconOnlySizeClasses: Record<Size, string> = {
+	sm: "w-9 px-0",
+	md: "w-10 px-0",
+	lg: "w-12 px-0",
+};
+
+const {
+	class: className,
+	href,
+	title = "",
+	aria_label,
+	ariaLabel,
+	social = "website",
+	variant = "outline",
+	size = "md",
+	shape = "rounded",
+	iconOnly = false,
+	iconPosition = "left",
+	iconSize = size === "lg" ? 20 : size === "sm" ? 16 : 18,
+	iconStyle = "mono",
+	fullWidth = false,
+	external = /^https?:\/\//.test(href),
+	target,
+	rel,
+	labelClass = "",
+	iconClass = "",
+	...props
+} = Astro.props;
+
+const socialName = resolveSocialName(social);
+const icon = socialIcons[socialName];
+const computedLabel = ariaLabel ?? aria_label ?? title ?? icon.label;
+const linkTarget = target ?? (external ? "_blank" : undefined);
+const linkRel = rel ?? (external ? "noreferrer noopener" : undefined);
+const iconColorStyle = iconStyle === "brand" && icon.brandColor ? `color:${icon.brandColor}` : undefined;
+---
+
+<a
+	href={href}
+	target={linkTarget}
+	rel={linkRel}
+	aria-label={computedLabel}
+	title={computedLabel}
+	class={cn(
+		"group inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-colors duration-200",
+		variantClasses[variant],
+		sizeClasses[size],
+		shapeClasses[shape],
+		iconOnly && iconOnlySizeClasses[size],
+		fullWidth && "w-full",
+		className,
+	)}
+	{...props}
+>
+	{
+		iconPosition === "left" && (
+			<svg
+				viewBox={icon.viewBox}
+				width={iconSize}
+				height={iconSize}
+				class={cn("shrink-0 text-current", iconClass)}
+				style={iconColorStyle}
+				aria-hidden="true"
+			>
+				<Fragment set:html={icon.body} />
+			</svg>
+		)
+	}
+
+	{
+		!iconOnly && (
+			<span class={cn("inline-block leading-none", labelClass)}>
+				{title || icon.label}
+			</span>
+		)
+	}
+
+	{
+		iconPosition === "right" && (
+			<svg
+				viewBox={icon.viewBox}
+				width={iconSize}
+				height={iconSize}
+				class={cn("shrink-0 text-current", iconClass)}
+				style={iconColorStyle}
+				aria-hidden="true"
+			>
+				<Fragment set:html={icon.body} />
+			</svg>
+		)
+	}
+</a>
