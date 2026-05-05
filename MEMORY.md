@@ -34,3 +34,4 @@ Also update `PROJECT_STATE.md` whenever a new component, command, feature, workf
 - Updated `README.md` and `PROJECT_STATE.md` to document the registry-driven Astro component CLI behavior.
 - Imported 37 Astro/React components from `/Users/samgold/Desktop/Проекты/starters/starter-astro-6.1` into the CLI registry with JSON manifests, copied local helper/data files, normalized `cn` imports, and dependency metadata.
 - Removed deprecated explicit `esModuleInterop: false` from `tsconfig.json` so `npm publish` prepack builds pass on newer TypeScript versions.
+- Added explicit Node type loading in `tsconfig.json` with `types: ["node"]` so CI publish builds can resolve `process`, `Buffer`, and `node:*` imports.
