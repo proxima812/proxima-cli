@@ -1,6 +1,6 @@
 {
   "name": "ui_proxima",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "CLI for bootstrapping Proxima UI in Astro projects",
   "type": "module",
   "bin": {
