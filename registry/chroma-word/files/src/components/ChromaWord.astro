@@ -1,0 +1,63 @@
+---
+import type { ChromaPreset, SweepFrom } from "./chroma";
+import { chromaPositions, chromaPresets } from "./chroma";
+
+type Props = {
+	word: string;
+	from?: SweepFrom;
+	preset?: ChromaPreset;
+	class?: string;
+};
+
+const { word, from = "left", preset = "prism", class: className = "" } = Astro.props;
+
+const activePreset = chromaPresets[preset] ?? chromaPresets.prism;
+const activePosition = chromaPositions[from] ?? chromaPositions.left;
+
+const style = [
+	`--chroma-gradient: ${activePreset}`,
+	`--chroma-background-size: ${activePosition.size}`,
+	`--chroma-position-from: ${activePosition.from}`,
+	`--chroma-position-to: ${activePosition.to}`,
+].join(";");
+---
+
+<span class={`chroma-word ${className}`.trim()} style={style}>
+	{word}
+</span>
+
+<style>
+	.chroma-word {
+		display: inline-block;
+		background-image: var(--chroma-gradient);
+		background-size: var(--chroma-background-size);
+		background-position: var(--chroma-position-from);
+		will-change: background-position, filter;
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
+		animation: chroma-sweep 1010ms ease-in-out 180ms forwards;
+		filter: blur(2px);
+	}
+
+	@keyframes chroma-sweep {
+		0% {
+			background-position: var(--chroma-position-from);
+			filter: blur(2px);
+		}
+
+		100% {
+			background-position: var(--chroma-position-to);
+			filter: blur(0);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.chroma-word {
+			animation: none;
+			background-position: var(--chroma-position-to);
+			filter: none;
+		}
+	}
+</style>

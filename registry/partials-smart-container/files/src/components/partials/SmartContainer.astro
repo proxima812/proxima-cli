@@ -1,0 +1,29 @@
+---
+import { cn } from "@/lib/utils";
+
+interface Props {
+	class?: string;
+	containerOff?: boolean;
+	innerSetOff?: boolean;
+	gap?: string;
+}
+
+const { class: className, containerOff, innerSetOff, gap } = Astro.props;
+---
+
+<!-- 
+
+Внешние оступы my-18
+
+потому gap-12 (внутренние отступы) 12*1,5 = 18
+
+-->
+<div
+	class={containerOff
+		? cn("no-container", className)
+		: cn("container flex-1 px-5 mx-auto max-w-6xl my-18", className)}
+>
+	<div class={innerSetOff ? null : cn("flex flex-col gap-12", gap)}>
+		<slot />
+	</div>
+</div>

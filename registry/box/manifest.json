@@ -1,0 +1,14 @@
+{
+  "name": "box",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/Box.astro",
+      "target": "src/components/Box.astro"
+    }
+  ],
+  "dependencies": [
+    "@toolwind/corner-shape"
+  ],
+  "devDependencies": []
+}

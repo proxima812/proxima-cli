@@ -1,0 +1,12 @@
+{
+  "name": "seo-analytics-yandex-metrika",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/SEO/Analytics/YandexMetrika.astro",
+      "target": "src/components/SEO/Analytics/YandexMetrika.astro"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

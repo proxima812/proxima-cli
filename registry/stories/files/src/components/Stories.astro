@@ -1,0 +1,336 @@
+---
+const stories = [
+	{
+		name: "Anna",
+		handle: "@anna.studio",
+		time: "2ч назад",
+		title: "Новая подборка",
+		description: "Собрали вдохновение для летнего лука и сохранили в истории.",
+		cta: "Смотреть подборку",
+		image:
+			"https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=1200&q=80",
+	},
+	{
+		name: "Noah",
+		handle: "@noah.journal",
+		time: "5ч назад",
+		title: "День команды",
+		description: "Показываем backstage со съёмки и короткие заметки по проекту.",
+		cta: "Открыть историю",
+		image:
+			"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=1200&q=80",
+	},
+	{
+		name: "Emily",
+		handle: "@emily.edit",
+		time: "1ч назад",
+		title: "Новый релиз",
+		description: "Коротко рассказываем, что изменилось на сайте за эту неделю.",
+		cta: "Узнать детали",
+		image:
+			"https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80",
+	},
+	{
+		name: "Liam",
+		handle: "@liam.stories",
+		time: "3ч назад",
+		title: "Тест интерфейса",
+		description: "Проверяем новые карточки, кликабельные зоны и микроанимации.",
+		cta: "Посмотреть тест",
+		image:
+			"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80",
+	},
+	{
+		name: "Sophie",
+		handle: "@sophie.notes",
+		time: "9ч назад",
+		title: "История дня",
+		description: "Формат вертикальных историй для акций, новостей и быстрых анонсов.",
+		cta: "Открыть формат",
+		image:
+			"https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=1200&q=80",
+	},
+	{
+		name: "Mark",
+		handle: "@mark.daily",
+		time: "11ч назад",
+		title: "Новая акция",
+		description: "Истории на сайте быстро ведут к товару, статье или нужному разделу.",
+		cta: "Перейти к акции",
+		image:
+			"https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=1200&q=80",
+	},
+] as const;
+---
+
+<section class="space-y-5 max-md:-mx-5" data-stories-root data-story-duration="5000">
+	<div class="overflow-hidden rounded-[2rem] border border-zinc-200 bg-[linear-gradient(180deg,#ffffff_0%,#f7f7f5_100%)] shadow-[0_18px_50px_-32px_rgba(15,23,42,0.3)]">
+		<div class="flex items-start justify-between gap-4 border-b border-zinc-200/80 px-5 py-4 sm:px-6">
+			<div class="space-y-1">
+				<p class="text-sm font-semibold text-zinc-950">Истории на сайте</p>
+				<p class="max-w-xl text-sm leading-6 text-zinc-600">
+					Горизонтальная лента превью, знакомый формат просмотра и быстрый переход к контенту.
+				</p>
+			</div>
+			<span class="rounded-full bg-zinc-950 px-3 py-1 text-xs font-medium text-white">Web Stories</span>
+		</div>
+
+		<div class="flex gap-4 overflow-x-auto px-5 py-5 sm:px-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+			{
+				stories.map((story, index) => (
+					<button
+						type="button"
+						aria-label={`Открыть историю ${story.name}`}
+						class="group flex min-w-[88px] flex-col items-center gap-2.5 text-center"
+						data-story-thumb
+						data-story-index={String(index)}
+						data-story-name={story.name}
+						data-story-handle={story.handle}
+						data-story-time={story.time}
+						data-story-title={story.title}
+						data-story-description={story.description}
+						data-story-cta={story.cta}
+						data-story-image={story.image}
+					>
+						<span class="rounded-[999px] bg-[linear-gradient(135deg,#f97316_0%,#ec4899_45%,#8b5cf6_100%)] p-[3px] shadow-[0_10px_24px_-18px_rgba(236,72,153,0.8)] transition duration-300 group-hover:scale-[1.04]">
+							<span class="relative block h-20 w-20 overflow-hidden rounded-full border-2 border-white bg-zinc-200">
+								<img
+									src={story.image}
+									alt={story.name}
+									loading="lazy"
+									class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.05]"
+								/>
+							</span>
+						</span>
+						<span class="space-y-0.5">
+							<span class="block text-sm font-medium leading-none text-zinc-950">{story.name}</span>
+							<span class="block text-xs leading-none text-zinc-500">Новая история</span>
+						</span>
+					</button>
+				))
+			}
+		</div>
+	</div>
+
+	<div
+		class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/85 p-4"
+		data-story-modal
+		aria-hidden="true"
+	>
+		<div class="relative w-full max-w-[390px] overflow-hidden rounded-[2rem] border border-white/15 bg-zinc-950 shadow-2xl">
+			<div class="absolute inset-x-0 top-0 z-20 px-3 pt-3">
+				<div class="flex gap-1.5" data-story-progress-track>
+					{
+						stories.map(() => (
+							<div class="h-1.5 flex-1 overflow-hidden rounded-full bg-white/15">
+								<div class="h-full w-0 rounded-full bg-white/95" data-story-progress-segment></div>
+							</div>
+						))
+					}
+				</div>
+
+				<div class="mt-3 flex items-center justify-between gap-3">
+					<div class="flex min-w-0 items-center gap-3">
+						<div class="h-10 w-10 overflow-hidden rounded-full border border-white/20">
+							<img src="" alt="" class="h-full w-full object-cover" data-story-avatar />
+						</div>
+						<div class="min-w-0">
+							<p class="truncate text-sm font-semibold text-white" data-story-name></p>
+							<p class="truncate text-xs text-white/70">
+								<span data-story-handle></span>
+								<span class="mx-1 text-white/40">•</span>
+								<span data-story-time></span>
+							</p>
+						</div>
+					</div>
+
+					<button
+						type="button"
+						class="flex h-9 w-9 items-center justify-center rounded-full bg-black/30 text-xl leading-none text-white transition hover:bg-black/50"
+						aria-label="Закрыть истории"
+						data-story-close
+					>
+						×
+					</button>
+				</div>
+			</div>
+
+			<div class="relative aspect-[9/16] w-full">
+				<img src="" alt="" class="h-full w-full object-cover" data-story-image />
+				<div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.42)_0%,rgba(0,0,0,0.08)_42%,rgba(0,0,0,0.58)_100%)]"></div>
+
+				<div class="absolute inset-x-0 bottom-0 z-20 p-5">
+					<div class="rounded-[1.5rem] bg-black/28 p-4 backdrop-blur-md">
+						<p class="text-xs font-medium uppercase text-white/65">История сайта</p>
+						<h3 class="mt-2 text-2xl font-semibold text-white" data-story-title></h3>
+						<p class="mt-2 text-sm leading-6 text-white/78" data-story-description></p>
+						<div class="mt-4 inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-medium text-zinc-950">
+							<span data-story-cta></span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="absolute inset-y-0 left-0 w-1/2 cursor-pointer" data-story-prev aria-hidden="true"></div>
+			<div class="absolute inset-y-0 right-0 w-1/2 cursor-pointer" data-story-next aria-hidden="true"></div>
+		</div>
+	</div>
+</section>
+
+<script>
+	const roots = document.querySelectorAll("[data-stories-root]");
+
+	for (const root of roots) {
+		const duration = Number(root.getAttribute("data-story-duration") || "5000");
+		const storiesData = Array.from(root.querySelectorAll("[data-story-thumb]"));
+		const modal = root.querySelector("[data-story-modal]");
+		const prevArea = modal?.querySelector("[data-story-prev]");
+		const nextArea = modal?.querySelector("[data-story-next]");
+		const imageEl = modal?.querySelector("[data-story-image]");
+		const avatarEl = modal?.querySelector("[data-story-avatar]");
+		const nameEl = modal?.querySelector("[data-story-name]");
+		const handleEl = modal?.querySelector("[data-story-handle]");
+		const timeEl = modal?.querySelector("[data-story-time]");
+		const titleEl = modal?.querySelector("[data-story-title]");
+		const descriptionEl = modal?.querySelector("[data-story-description]");
+		const ctaEl = modal?.querySelector("[data-story-cta]");
+		const closeButton = modal?.querySelector("[data-story-close]");
+		const segments = Array.from(modal?.querySelectorAll("[data-story-progress-segment]") || []);
+		let activeIndex = 0;
+		let rafId = 0;
+		let startedAt = 0;
+
+		if (
+			!modal ||
+			!prevArea ||
+			!nextArea ||
+			!imageEl ||
+			!avatarEl ||
+			!nameEl ||
+			!handleEl ||
+			!timeEl ||
+			!titleEl ||
+			!descriptionEl ||
+			!ctaEl ||
+			!closeButton ||
+			segments.length === 0 ||
+			storiesData.length === 0
+		) {
+			continue;
+		}
+
+		const data = storiesData.map((thumb) => ({
+			image: thumb.getAttribute("data-story-image") || "",
+			name: thumb.getAttribute("data-story-name") || "",
+			handle: thumb.getAttribute("data-story-handle") || "",
+			time: thumb.getAttribute("data-story-time") || "",
+			title: thumb.getAttribute("data-story-title") || "",
+			description: thumb.getAttribute("data-story-description") || "",
+			cta: thumb.getAttribute("data-story-cta") || "",
+		}));
+
+		const cancelProgress = () => {
+			if (rafId) {
+				cancelAnimationFrame(rafId);
+				rafId = 0;
+			}
+		};
+
+		const updateSegments = (progress = 0) => {
+			segments.forEach((segment, index) => {
+				if (index < activeIndex) {
+					segment.style.width = "100%";
+					return;
+				}
+				if (index > activeIndex) {
+					segment.style.width = "0%";
+					return;
+				}
+				segment.style.width = `${progress * 100}%`;
+			});
+		};
+
+		const closeModal = () => {
+			cancelProgress();
+			modal.classList.add("hidden");
+			modal.classList.remove("flex");
+			modal.setAttribute("aria-hidden", "true");
+			document.body.style.overflow = "";
+		};
+
+		const nextStory = () => {
+			if (activeIndex >= data.length - 1) {
+				closeModal();
+				return;
+			}
+			activeIndex += 1;
+			renderStory();
+		};
+
+		const prevStory = () => {
+			activeIndex = activeIndex > 0 ? activeIndex - 1 : 0;
+			renderStory();
+		};
+
+		const startProgress = () => {
+			cancelProgress();
+			startedAt = performance.now();
+			const tick = (ts) => {
+				const progress = Math.min((ts - startedAt) / duration, 1);
+				updateSegments(progress);
+				if (progress < 1) {
+					rafId = requestAnimationFrame(tick);
+				} else {
+					nextStory();
+				}
+			};
+			rafId = requestAnimationFrame(tick);
+		};
+
+		const renderStory = () => {
+			const item = data[activeIndex];
+			imageEl.setAttribute("src", item.image);
+			imageEl.setAttribute("alt", item.title);
+			avatarEl.setAttribute("src", item.image);
+			avatarEl.setAttribute("alt", item.name);
+			nameEl.textContent = item.name;
+			handleEl.textContent = item.handle;
+			timeEl.textContent = item.time;
+			titleEl.textContent = item.title;
+			descriptionEl.textContent = item.description;
+			ctaEl.textContent = item.cta;
+			updateSegments(0);
+			startProgress();
+		};
+
+		const openStory = (index) => {
+			activeIndex = index;
+			modal.classList.remove("hidden");
+			modal.classList.add("flex");
+			modal.setAttribute("aria-hidden", "false");
+			document.body.style.overflow = "hidden";
+			renderStory();
+		};
+
+		storiesData.forEach((thumb, index) => {
+			thumb.addEventListener("click", () => openStory(index));
+		});
+
+		nextArea.addEventListener("click", nextStory);
+		prevArea.addEventListener("click", prevStory);
+		closeButton.addEventListener("click", closeModal);
+
+		modal.addEventListener("click", (event) => {
+			if (event.target === modal) {
+				closeModal();
+			}
+		});
+
+		document.addEventListener("keydown", (event) => {
+			if (modal.classList.contains("hidden")) return;
+			if (event.key === "Escape") closeModal();
+			if (event.key === "ArrowRight") nextStory();
+			if (event.key === "ArrowLeft") prevStory();
+		});
+	}
+</script>

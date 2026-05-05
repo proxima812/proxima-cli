@@ -1,0 +1,12 @@
+{
+  "name": "animate-morph-text",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/animate/MorphText.astro",
+      "target": "src/components/animate/MorphText.astro"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

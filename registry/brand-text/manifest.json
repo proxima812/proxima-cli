@@ -1,0 +1,13 @@
+{
+  "name": "brand-text",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "src/components/BrandText.astro",
+      "target": "src/components/BrandText.astro"
+    }
+  ],
+  "type": "component",
+  "devDependencies": []
+}

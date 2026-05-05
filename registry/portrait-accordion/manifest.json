@@ -1,0 +1,14 @@
+{
+  "name": "portrait-accordion",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/PortraitAccordion.astro",
+      "target": "src/components/PortraitAccordion.astro"
+    }
+  ],
+  "dependencies": [
+    "motion"
+  ],
+  "devDependencies": []
+}

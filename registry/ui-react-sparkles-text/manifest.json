@@ -1,0 +1,20 @@
+{
+  "name": "ui-react-sparkles-text",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/ui/react/SparklesText.tsx",
+      "target": "src/components/ui/react/SparklesText.tsx"
+    }
+  ],
+  "dependencies": [
+    "@astrojs/react",
+    "motion",
+    "react",
+    "react-dom"
+  ],
+  "devDependencies": [
+    "@types/react",
+    "@types/react-dom"
+  ]
+}

@@ -1,0 +1,104 @@
+---
+import BigWordBottom from "@/components/partials/BigWordBottom.astro";
+import Container from "@/components/partials/Container.astro";
+import Logo from "@/components/partials/Logo.astro";
+import { navigation_footer } from "@/data/navigation_footer";
+import { cn } from "@/lib/utils";
+import { Icon } from "astro-icon/components";
+
+interface Props {
+	bottomWords?: boolean;
+}
+
+const { bottomWords = true } = Astro.props;
+---
+
+<footer class="relative">
+	<Container class="max-w-7xl">
+		<div>
+			<section class="rounded-2xl border border-zinc-200 bg-white p-7">
+				<Logo />
+				<p class="mt-2.5 max-w-xl leading-tight text-zinc-600">
+					Лаконичный footer: спокойная типографика, чистая сетка и акцент на навигацию.
+				</p>
+			</section>
+
+			<hr
+				class="mb-3 h-px w-full border-0 bg-gradient-to-r from-transparent via-zinc-300/70 to-transparent"
+			/>
+
+			<section class="grid grid-cols-1 gap-3 md:grid-cols-[1fr_3fr]">
+				<div
+					class="bg-zinc-800/90 backdrop-blur-lg flex flex-col justify-between rounded-2xl border border-zinc-900 p-7"
+				>
+					<div>
+						<span class="font-medium text-white">На связи</span>
+						<p class="mt-2.5 leading-tight text-zinc-100">
+							Выбирай удобный канал, мы отвечаем в рабочее время без задержек.
+						</p>
+					</div>
+					<a
+						href="#"
+						class="mt-6 inline-flex w-fit rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-700"
+					>
+						Оставить заявку
+					</a>
+				</div>
+
+				<div
+					class="bg-white/80 md:gap-y-0 gap-8 backdrop-blur-lg grid grid-cols-1 rounded-2xl border border-zinc-200 p-7 md:grid-cols-2 lg:grid-cols-3
+					[&>*:nth-child(3n+1)]:lg:justify-self-start
+					[&>*:nth-child(3n+2)]:lg:justify-self-center
+					[&>*:nth-child(3n)]:lg:justify-self-end"
+				>
+					{
+						navigation_footer.map((item) => {
+							const columnKey = Object.keys(item).find((key) => key.startsWith("colunm"));
+							const links = columnKey ? item[columnKey] : [];
+
+							return (
+								<div class="flex flex-col items-center lg:items-start">
+									<span class="mb-3 font-medium text-zinc-900">{item.category}</span>
+									<nav class="flex flex-col items-center gap-2.5 lg:items-start">
+										{Array.isArray(links) &&
+											links.slice(0, 6).map((link) => (
+												<a
+													class={cn(
+														"flex items-center gap-1 text-zinc-700 transition-colors hover:text-zinc-900",
+														link.style,
+													)}
+													href={link.href}
+													target={link.target}
+												>
+													{link.icon && <Icon name={link.icon} />}
+													<span>{link.label}</span>
+												</a>
+											))}
+									</nav>
+								</div>
+							);
+						})
+					}
+				</div>
+			</section>
+		</div>
+	</Container>
+
+	<section class="absolute bottom-0 z-50 w-full p-7">
+		<Container class="max-w-7xl">
+			<div class="flex flex-wrap items-center justify-center gap-3 md:justify-between">
+				<span class="font-medium text-zinc-600">&copy; {new Date().getFullYear()}</span>
+			</div>
+		</Container>
+	</section>
+
+	{
+		bottomWords && (
+			<BigWordBottom text="calm" className="hue" color1="from-zinc-700" color2="to-zinc-500" />
+		)
+	}
+</footer>
+
+
+
+

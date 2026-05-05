@@ -1,0 +1,12 @@
+{
+  "name": "partials-logo",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/partials/Logo.astro",
+      "target": "src/components/partials/Logo.astro"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

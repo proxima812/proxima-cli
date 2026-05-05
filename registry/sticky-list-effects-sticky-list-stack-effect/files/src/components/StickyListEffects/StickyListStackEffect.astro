@@ -1,0 +1,25 @@
+---
+const cards = ["Стратегия", "Дизайн", "Разработка", "Рост"];
+---
+
+<section class="mx-auto max-w-6xl px-5 py-16">
+  <h3 class="mb-8 text-center text-2xl font-semibold">Stack Effect</h3>
+
+  <div class="space-y-8">
+    {cards.map((card, i) => (
+      <article
+        class="sticky top-24 rounded-3xl border border-zinc-200 bg-white p-8 shadow-[0_15px_35px_-25px_rgba(0,0,0,0.35)] transition"
+        style={`transform: scale(${1 - i * 0.03}); opacity: ${1 - i * 0.08};`}
+      >
+        <p class="text-xs uppercase tracking-wide text-zinc-500">Layer {i + 1}</p>
+        <h4 class="mt-2 text-xl font-semibold">{card}</h4>
+        <p class="mt-2 text-zinc-600">
+          На desktop карточки читаются как стек. На mobile остаётся чистая вертикальная
+          лента.
+        </p>
+      </article>
+    ))}
+
+    <div class="h-[45vh] md:h-[60vh]"></div>
+  </div>
+</section>

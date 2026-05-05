@@ -1,0 +1,12 @@
+{
+  "name": "partials-smart-container",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/partials/SmartContainer.astro",
+      "target": "src/components/partials/SmartContainer.astro"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

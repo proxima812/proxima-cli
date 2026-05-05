@@ -1,0 +1,31 @@
+{
+  "name": "markdown",
+  "dependencies": [
+    "astro-icon"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "src/components/markdown/A.astro",
+      "target": "src/components/markdown/A.astro"
+    },
+    {
+      "path": "src/components/markdown/Blockquote.astro",
+      "target": "src/components/markdown/Blockquote.astro"
+    },
+    {
+      "path": "src/components/markdown/Code.astro",
+      "target": "src/components/markdown/Code.astro"
+    },
+    {
+      "path": "src/components/markdown/Pre.astro",
+      "target": "src/components/markdown/Pre.astro"
+    },
+    {
+      "path": "src/components/markdown/index.ts",
+      "target": "src/components/markdown/index.ts"
+    }
+  ],
+  "type": "component",
+  "devDependencies": []
+}

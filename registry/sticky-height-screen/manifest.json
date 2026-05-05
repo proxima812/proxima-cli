@@ -1,0 +1,14 @@
+{
+  "name": "sticky-height-screen",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/StickyHeightScreen.astro",
+      "target": "src/components/StickyHeightScreen.astro"
+    }
+  ],
+  "dependencies": [
+    "motion"
+  ],
+  "devDependencies": []
+}

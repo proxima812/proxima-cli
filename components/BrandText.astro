@@ -1,0 +1,105 @@
+---
+import { cn } from "@/utils/lib/cn";
+
+type GradientFromClass = `from-${string}`;
+type GradientToClass = `to-${string}`;
+
+interface Props {
+	text: string;
+	className?: string;
+	color1?: GradientFromClass;
+	color2?: GradientToClass;
+	ariaLabel?: string;
+	id?: string;
+}
+
+const { id, text, className, color1, color2, ariaLabel = text } = Astro.props;
+---
+
+<!-- -z-[1] под слой  -->
+<div
+	class="relative -mt-12 px-5 md:-mt-20 md:px-30 after:absolute after:inset-0 after:h-full after:bg-linear-to-b after:from-transparent after:to-white"
+>
+	<div class="overflow-hidden text-[clamp(1rem,90%,25rem)]">
+		<div
+			id={id}
+			aria-label={ariaLabel}
+			class={cn(
+				"responsive-brand-text mx-auto bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-center leading-[0.8] font-black text-transparent uppercase max-md:py-5",
+				color1,
+				color2,
+				className,
+			)}
+		>
+			{text}
+		</div>
+
+		<div
+			aria-hidden="true"
+			class="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[calc(50%+1.5rem)] w-full *:absolute *:inset-0 *:[-webkit-mask-repeat:no-repeat] *:[mask-repeat:no-repeat]"
+		>
+			<div
+				class="hidden z-[70] backdrop-blur-[1px] [-webkit-mask-image:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,1)_10%,rgba(0,0,0,1)_30%,rgba(0,0,0,0)_40%)] [mask-image:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,1)_10%,rgba(0,0,0,1)_30%,rgba(0,0,0,0)_40%)] md:block"
+			>
+			</div>
+
+			<div
+				class="hidden z-[60] backdrop-blur-[2px] [-webkit-mask-image:linear-gradient(rgba(0,0,0,0)_10%,rgba(0,0,0,1)_20%,rgba(0,0,0,1)_40%,rgba(0,0,0,0)_50%)] [mask-image:linear-gradient(rgba(0,0,0,0)_10%,rgba(0,0,0,1)_20%,rgba(0,0,0,1)_40%,rgba(0,0,0,0)_50%)] md:block"
+			>
+			</div>
+
+			<div
+				class="hidden z-[50] backdrop-blur-[4px] [-webkit-mask-image:linear-gradient(rgba(0,0,0,0)_15%,rgba(0,0,0,1)_30%,rgba(0,0,0,1)_50%,rgba(0,0,0,0)_60%)] [mask-image:linear-gradient(rgba(0,0,0,0)_15%,rgba(0,0,0,1)_30%,rgba(0,0,0,1)_50%,rgba(0,0,0,0)_60%)] md:block"
+			>
+			</div>
+
+			<div
+				class="z-[40] backdrop-blur-[8px] [-webkit-mask-image:linear-gradient(rgba(0,0,0,0)_20%,rgba(0,0,0,1)_40%,rgba(0,0,0,1)_60%,rgba(0,0,0,0)_70%)] [mask-image:linear-gradient(rgba(0,0,0,0)_20%,rgba(0,0,0,1)_40%,rgba(0,0,0,1)_60%,rgba(0,0,0,0)_70%)]"
+			>
+			</div>
+
+			<div
+				class="z-[30] backdrop-blur-[16px] [-webkit-mask-image:linear-gradient(rgba(0,0,0,0)_40%,rgba(0,0,0,1)_60%,rgba(0,0,0,1)_80%,rgba(0,0,0,0)_90%)] [mask-image:linear-gradient(rgba(0,0,0,0)_40%,rgba(0,0,0,1)_60%,rgba(0,0,0,1)_80%,rgba(0,0,0,0)_90%)]"
+			>
+			</div>
+
+			<div
+				class="z-[20] backdrop-blur-[32px] [-webkit-mask-image:linear-gradient(rgba(0,0,0,0)_60%,rgba(0,0,0,1)_80%)] [mask-image:linear-gradient(rgba(0,0,0,0)_60%,rgba(0,0,0,1)_80%)]"
+			>
+			</div>
+
+			<div
+				class="z-[10] backdrop-blur-[52px] [-webkit-mask-image:linear-gradient(rgba(0,0,0,0)_70%,rgba(0,0,0,1)_100%)] [mask-image:linear-gradient(rgba(0,0,0,0)_70%,rgba(0,0,0,1)_100%)]"
+			>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script is:inline>
+	function fitText(el, { min = 20, max = 400 } = {}) {
+		if (!el || !el.parentElement) return;
+
+		const parent = el.parentElement;
+
+		const resize = () => {
+			el.style.fontSize = `${max}px`;
+
+			const ratio = parent.clientWidth / el.scrollWidth;
+			const size = Math.max(min, Math.min(max, max * ratio));
+
+			el.style.fontSize = `${size}px`;
+		};
+
+		const ro = new ResizeObserver(resize);
+		ro.observe(parent);
+
+		document.fonts?.ready.then(resize);
+
+		resize();
+	}
+
+	document.querySelectorAll(".responsive-brand-text").forEach((el) => {
+		fitText(el, { min: 24, max: 500 });
+	});
+</script>

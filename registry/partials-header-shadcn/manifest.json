@@ -1,0 +1,26 @@
+{
+  "name": "partials-header-shadcn",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/partials/HeaderShadcn.astro",
+      "target": "src/components/partials/HeaderShadcn.astro"
+    },
+    {
+      "path": "src/data/navigation.ts",
+      "target": "src/data/navigation.ts"
+    },
+    {
+      "path": "src/components/partials/Container.astro",
+      "target": "src/components/partials/Container.astro"
+    },
+    {
+      "path": "src/components/partials/Logo.astro",
+      "target": "src/components/partials/Logo.astro"
+    }
+  ],
+  "dependencies": [
+    "astro-icon"
+  ],
+  "devDependencies": []
+}

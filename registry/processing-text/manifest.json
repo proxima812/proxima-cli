@@ -1,0 +1,21 @@
+{
+  "name": "processing-text",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/ProcessingText.tsx",
+      "target": "src/components/ProcessingText.tsx"
+    }
+  ],
+  "dependencies": [
+    "@astrojs/react",
+    "motion",
+    "react",
+    "react-dom",
+    "split-type"
+  ],
+  "devDependencies": [
+    "@types/react",
+    "@types/react-dom"
+  ]
+}

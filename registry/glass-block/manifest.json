@@ -1,0 +1,12 @@
+{
+  "name": "glass-block",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/GlassBlock.astro",
+      "target": "src/components/GlassBlock.astro"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

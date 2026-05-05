@@ -1,0 +1,96 @@
+---
+import { cn } from "@/lib/utils";
+
+interface Props {
+	variant?:
+		| "default"
+		| "borderless"
+		| "no-ring"
+		| "gradient"
+		| "squircle"
+		| "black"
+		| "blue"
+		| "purple"
+		| "green";
+	class?: string;
+	outerClass?: string;
+	middleClass?: string;
+	innerClass?: string;
+}
+
+const {
+	variant = "default",
+	class: className = "",
+	outerClass = "",
+	middleClass = "",
+	innerClass = "",
+} = Astro.props;
+
+const base = {
+	outer: "max-w-full rounded-4xl",
+	middle: "rounded-4xl p-2 shadow-md shadow-black/5",
+	inner: "rounded-4xl p-6 lg:shadow-2xl",
+};
+
+const variants = {
+	default: {
+		outer: "shadow-[inset_0_0_2px_1px_#ffffff4d] ring-1 ring-black/5",
+		middle: "",
+		inner: "bg-white ring-1 ring-black/5",
+	},
+	borderless: {
+		outer: "",
+		middle: "",
+		inner: "bg-white ring-1 ring-black/5",
+	},
+	"no-ring": {
+		outer: "shadow-[inset_0_0_2px_1px_#ffffff4d] ring-1 ring-black/5",
+		middle: "",
+		inner: "bg-white",
+	},
+	gradient: {
+		outer: "",
+		middle: "",
+		inner: "bg-gradient-to-t from-white to-transparent",
+	},
+	squircle: {
+		outer: "corner-shape",
+		middle: "corner-shape",
+		inner: "rounded-3xl corner-shape bg-gradient-to-t from-white to-transparent",
+	},
+	black: {
+		outer: "corner-squircle bg-zinc-950/95 shadow-lg shadow-black/20",
+		middle: "",
+		inner:
+			"rounded-[1.7rem] corner-tr-bevel corner-bl-squircle bg-white/5 text-zinc-50 ring-1 ring-white/10",
+	},
+	blue: {
+		outer: "corner-squircle bg-slate-900 shadow-lg shadow-slate-950/20",
+		middle: "",
+		inner:
+			"rounded-[1.7rem] corner-tr-notch corner-bl-squircle bg-gradient-to-t from-blue-100/80 to-blue-50/95 text-slate-900 ring-1 ring-blue-900/10",
+	},
+	purple: {
+		outer: "corner-squircle bg-violet-950/90 shadow-lg shadow-violet-950/20",
+		middle: "",
+		inner:
+			"rounded-[1.7rem] corner-tl-squircle corner-br-notch bg-gradient-to-t from-violet-100/85 to-fuchsia-50/95 text-slate-900 ring-1 ring-violet-900/10",
+	},
+	green: {
+		outer: "corner-squircle bg-emerald-950/85 shadow-lg shadow-emerald-950/20",
+		middle: "",
+		inner:
+			"rounded-[1.7rem] corner-tl-bevel corner-br-squircle bg-gradient-to-t from-emerald-100/85 to-green-50/95 text-slate-900 ring-1 ring-emerald-900/10",
+	},
+} as const;
+
+const selectedVariant = variants[variant] ?? variants.default;
+---
+
+<section class={cn(base.outer, selectedVariant.outer, className, outerClass)}>
+	<div class={cn(base.middle, selectedVariant.middle, middleClass)}>
+		<div class={cn(base.inner, selectedVariant.inner, innerClass)}>
+			<slot />
+		</div>
+	</div>
+</section>

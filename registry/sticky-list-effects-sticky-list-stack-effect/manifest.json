@@ -1,0 +1,12 @@
+{
+  "name": "sticky-list-effects-sticky-list-stack-effect",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/StickyListEffects/StickyListStackEffect.astro",
+      "target": "src/components/StickyListEffects/StickyListStackEffect.astro"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

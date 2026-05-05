@@ -1,0 +1,16 @@
+{
+  "name": "widgets-social-button",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/widgets/SocialButton.astro",
+      "target": "src/components/widgets/SocialButton.astro"
+    },
+    {
+      "path": "src/components/widgets/social-icons.ts",
+      "target": "src/components/widgets/social-icons.ts"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

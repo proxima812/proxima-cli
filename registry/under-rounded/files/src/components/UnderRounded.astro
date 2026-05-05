@@ -1,0 +1,72 @@
+---
+// const colors = [
+// 	"white",
+// 	"blue",
+// 	"green",
+// 	"purple",
+// 	"forest",
+// 	"icefire",
+// 	"sunset",
+// 	"lagoon",
+// 	"galaxy",
+// 	"lavender",
+// ];
+
+const colors = [
+	"neutral-soft",
+	"cool-milk",
+	"blue-haze",
+	"violet-mist",
+	"green-fog",
+	"glass-soft",
+	"glass-dark",
+	"hero-elegant",
+	"dawn-mint",
+	"rose-gold",
+	"aurora-lav",
+	"citrus-calm",
+	"night-silk",
+	"nebula-blush",
+	"cosmic-teal",
+	"supernova-amber",
+	"void-indigo",
+	"orion-green",
+	"quasar-fuchsia",
+	"meteor-rose",
+	"eclipse-cyan",
+	"galaxy-mauve",
+	"pulsar-lime",
+	"celestial-slate",
+	"starlight-gold",
+];
+
+const setColor = 1;
+---
+
+
+
+<section class={`radial-${colors[setColor]} rounded-4xl p-8 md:p-16 out-size`}>
+	<div class="flex flex-col gap-12">
+		<h1>Умная адаптивная типографика без брейкпоинтов</h1>
+
+		<p>
+			Этот заголовок использует clamp(), text-balance и аккуратные line-height, чтобы выглядеть
+			одинаково хорошо на мобильных устройствах, ноутбуках и больших экранах без md, lg и xl
+			костылей.
+		</p>
+
+		<p>
+			Размер шрифта плавно масштабируется от минимального к максимальному значению, сохраняя
+			визуальную иерархию и комфорт для чтения.
+		</p>
+
+		<h3>Tailwind + Astro = чистота</h3>
+
+		<p>
+			Такой подход отлично ложится в дизайн-системы, легко поддерживается и не требует
+			постоянной ручной настройки под новые устройства.
+		</p>
+	</div>
+</section>
+
+

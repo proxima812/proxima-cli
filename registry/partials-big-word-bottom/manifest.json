@@ -1,0 +1,12 @@
+{
+  "name": "partials-big-word-bottom",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/partials/BigWordBottom.astro",
+      "target": "src/components/partials/BigWordBottom.astro"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

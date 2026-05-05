@@ -1,0 +1,16 @@
+{
+  "name": "motion-blocks",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/MotionBlocks.astro",
+      "target": "src/components/MotionBlocks.astro"
+    },
+    {
+      "path": "src/components/MotionBlocks/Scene.astro",
+      "target": "src/components/MotionBlocks/Scene.astro"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

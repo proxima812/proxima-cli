@@ -1,0 +1,47 @@
+---
+const steps = [
+	"Бриф и контекст",
+	"Прототип и структура",
+	"Дизайн-система",
+	"Разработка и QA",
+	"Запуск и аналитика",
+];
+---
+
+<section class="mx-auto max-w-6xl px-5 py-16">
+	<h3 class="mb-8 text-center text-2xl font-semibold">Scroll Story</h3>
+
+	<div class="grid gap-8 md:grid-cols-[1fr_2fr]">
+		<aside class="hidden md:block">
+			<div class="sticky top-24 rounded-2xl border border-zinc-200 bg-white p-4">
+				<p class="text-xs uppercase tracking-wide text-zinc-500">Progress</p>
+				<ol class="mt-3 space-y-2 text-sm text-zinc-700">
+					{
+						steps.map((step, i) => (
+							<li>
+								<span class="font-medium">{i + 1}.</span> {step}
+							</li>
+						))
+					}
+				</ol>
+			</div>
+		</aside>
+
+		<div class="space-y-6">
+			{
+				steps.map((step, i) => (
+					<article class="sticky top-20 rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm">
+						<p class="text-xs uppercase tracking-wide text-zinc-500">Step {i + 1}</p>
+						<h4 class="mt-2 text-xl font-semibold">{step}</h4>
+						<p class="mt-2 text-zinc-600">
+							Пошаговый скролл-сценарий с фокусом на процессе и понятной навигацией.
+						</p>
+						<p class="mt-3 text-sm text-zinc-500 md:hidden">
+							{i + 1}/{steps.length}
+						</p>
+					</article>
+				))
+			}
+		</div>
+	</div>
+</section>

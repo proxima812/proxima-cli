@@ -1,0 +1,1 @@
+export declare const CN_TEMPLATE = "import clsx from \"clsx\"\nimport { twMerge } from \"tailwind-merge\"\n\nexport const cn = (...inputs: (string | undefined | null | false)[]) => {\n\treturn twMerge(clsx(inputs))\n}\n";

@@ -1,0 +1,12 @@
+{
+  "name": "style-box",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/StyleBox.astro",
+      "target": "src/components/StyleBox.astro"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

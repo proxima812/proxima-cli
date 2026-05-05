@@ -1,0 +1,13 @@
+---
+import YooButtonVariant from "@/components/YooButtonVariant.astro";
+
+const variants = ["midnight-mesh", "arctic-mesh", "orchid-mesh", "mint-mesh", "sunset-mesh"] as const;
+---
+
+<section class="flex flex-wrap gap-4 items-center justify-center">
+	{
+		variants.map((variant) => (
+			<YooButtonVariant text="Подключиться" href="https://t.me/" variant={variant} />
+		))
+	}
+</section>

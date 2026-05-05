@@ -1,0 +1,12 @@
+{
+  "name": "svg",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/SVG.astro",
+      "target": "src/components/SVG.astro"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

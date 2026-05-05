@@ -1,0 +1,12 @@
+{
+  "name": "stories",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/Stories.astro",
+      "target": "src/components/Stories.astro"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

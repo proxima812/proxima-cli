@@ -4,11 +4,10 @@
   "description": "CLI for bootstrapping Proxima UI in Astro projects",
   "type": "module",
   "bin": {
-    "ui_proxima": "./bin/ui_proxima.js"
+    "ui_proxima": "./dist/bin/ui_proxima.js"
   },
   "files": [
-    "bin",
-    "src",
+    "dist",
     "registry"
   ],
   "keywords": [
@@ -18,8 +17,14 @@
   ],
   "license": "MIT",
   "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepack": "npm run build",
     "release": "npm version patch && git push && git push --tags",
     "release:minor": "npm version minor && git push && git push --tags",
     "release:major": "npm version major && git push && git push --tags"
+  },
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "typescript": "^5.9.2"
   }
 }

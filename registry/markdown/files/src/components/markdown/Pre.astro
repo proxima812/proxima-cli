@@ -1,0 +1,18 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "@/lib/utils";
+
+interface Props extends HTMLAttributes<"pre"> {}
+
+const { class: className, ...props } = Astro.props;
+---
+
+<pre
+  {...props}
+  class={cn(
+    "my-6 overflow-x-auto rounded-lg bg-zinc-950 p-4 text-sm text-zinc-100",
+    className,
+  )}
+>
+  <slot />
+</pre>

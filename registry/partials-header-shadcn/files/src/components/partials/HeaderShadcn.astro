@@ -1,0 +1,211 @@
+---
+import { navigation } from "@/data/navigation";
+import { cn } from "@/lib/utils";
+import { Icon } from "astro-icon/components";
+import Container from "./Container.astro";
+import Logo from "./Logo.astro";
+
+interface Props {
+	fixed?: boolean;
+	menuLabel?: string;
+}
+
+const { fixed = true, menuLabel = "Menu" } = Astro.props;
+---
+
+<header class={cn(fixed && "h-20 lg:h-16")}>
+	<div
+		data-header-shadcn-root
+		class={cn(
+			"w-full border-b border-zinc-200/80 bg-white/88 text-zinc-900 backdrop-blur-xl",
+			fixed &&
+				"fixed inset-x-0 top-0 z-50 shadow-[0_12px_40px_-28px_rgba(0,0,0,0.35)]",
+			!fixed && "relative",
+		)}
+	>
+		<Container class="items-center py-3">
+			<div class="flex items-center justify-between gap-5">
+				<Logo />
+
+				<nav class="hidden items-center gap-0 lg:flex" aria-label="Основная навигация">
+					{
+						navigation.map((link) => (
+							<a
+								href={link.href}
+								title={link.label}
+								target={link.target}
+								rel={link.target === "_blank" ? "noopener noreferrer" : undefined}
+								class={cn(
+									"inline-flex h-8 shrink-0 items-center justify-center gap-1.5 rounded-md px-2.5 text-sm font-medium whitespace-nowrap text-zinc-800 transition-all outline-none hover:bg-zinc-100 hover:text-zinc-950 focus-visible:ring-2 focus-visible:ring-zinc-300",
+									link.style,
+								)}
+							>
+								{link.icon && <Icon name={link.icon} class="size-4" />}
+								<span>{link.label}</span>
+							</a>
+						))
+					}
+				</nav>
+
+				<button
+					type="button"
+					data-header-shadcn-toggle
+					data-state="closed"
+					aria-haspopup="dialog"
+					aria-expanded="false"
+					aria-controls="header-shadcn-mobile-nav"
+					aria-label="Открыть меню"
+					class="flex h-8 touch-manipulation items-center justify-start gap-2.5 rounded-md p-0 text-sm font-medium whitespace-nowrap text-zinc-900 transition-all outline-none hover:bg-transparent hover:text-zinc-950 focus-visible:ring-0 active:bg-transparent lg:hidden"
+				>
+					<div class="relative flex h-8 w-4 items-center justify-center">
+						<div class="relative size-4">
+							<span
+								data-header-shadcn-line="top"
+								class="absolute left-0 block h-0.5 w-4 rounded-full bg-current"
+							></span>
+							<span
+								data-header-shadcn-line="bottom"
+								class="absolute left-0 block h-0.5 w-4 rounded-full bg-current"
+							></span>
+						</div>
+						<span class="sr-only">Toggle Menu</span>
+					</div>
+					<span class="flex h-8 items-center text-lg leading-none font-medium">{menuLabel}</span>
+				</button>
+			</div>
+		</Container>
+
+		<div
+			id="header-shadcn-mobile-nav"
+			data-header-shadcn-panel
+			data-state="closed"
+			aria-hidden="true"
+			class="lg:hidden"
+		>
+			<Container class="pb-4">
+				<nav
+					class="rounded-2xl border border-zinc-200/80 bg-white p-2 shadow-[0_24px_80px_-32px_rgba(0,0,0,0.4)]"
+					aria-label="Мобильная навигация"
+				>
+					<div class="flex flex-col gap-1">
+						{
+							navigation.map((link) => (
+								<a
+									href={link.href}
+									title={link.label}
+									target={link.target}
+									rel={link.target === "_blank" ? "noopener noreferrer" : undefined}
+									class={cn(
+										"inline-flex min-h-11 items-center gap-2 rounded-xl px-3 py-3 text-base font-medium text-zinc-800 transition-colors hover:bg-zinc-100 hover:text-zinc-950",
+										link.style,
+									)}
+								>
+									{link.icon && <Icon name={link.icon} class="size-4" />}
+									<span>{link.label}</span>
+								</a>
+							))
+						}
+					</div>
+				</nav>
+			</Container>
+		</div>
+	</div>
+</header>
+
+<script data-astro-exec>
+	document.querySelectorAll("[data-header-shadcn-root]").forEach((root) => {
+		if (!(root instanceof HTMLElement) || root.dataset.bound === "true") return;
+		root.dataset.bound = "true";
+
+		const toggle = root.querySelector("[data-header-shadcn-toggle]");
+		const panel = root.querySelector("[data-header-shadcn-panel]");
+
+		if (!(toggle instanceof HTMLButtonElement) || !(panel instanceof HTMLElement)) return;
+
+		let isOpen = false;
+
+		const syncState = (next) => {
+			isOpen = next;
+			toggle.dataset.state = next ? "open" : "closed";
+			panel.dataset.state = next ? "open" : "closed";
+			toggle.setAttribute("aria-expanded", String(next));
+			toggle.setAttribute("aria-label", next ? "Закрыть меню" : "Открыть меню");
+			panel.setAttribute("aria-hidden", String(!next));
+		};
+
+		toggle.addEventListener("click", () => syncState(!isOpen));
+
+		panel.addEventListener("click", (event) => {
+			if (event.target instanceof Element && event.target.closest("a")) {
+				syncState(false);
+			}
+		});
+
+		document.addEventListener("click", (event) => {
+			if (!isOpen || !(event.target instanceof Node)) return;
+			if (!root.contains(event.target)) {
+				syncState(false);
+			}
+		});
+
+		document.addEventListener("keydown", (event) => {
+			if (event.key === "Escape") {
+				syncState(false);
+			}
+		});
+
+		window.addEventListener("resize", () => {
+			if (window.innerWidth >= 1024) {
+				syncState(false);
+			}
+		});
+
+		document.addEventListener("astro:before-preparation", () => syncState(false));
+	});
+</script>
+
+<style>
+	[data-header-shadcn-panel] {
+		overflow: hidden;
+		max-height: 0;
+		opacity: 0;
+		transform: translateY(-8px);
+		pointer-events: none;
+		transition:
+			max-height 180ms ease,
+			opacity 140ms ease,
+			transform 180ms ease;
+	}
+
+	[data-header-shadcn-panel][data-state="open"] {
+		max-height: 80vh;
+		opacity: 1;
+		transform: translateY(0);
+		pointer-events: auto;
+	}
+
+	[data-header-shadcn-line] {
+		transition:
+			top 100ms ease,
+			transform 100ms ease,
+			opacity 100ms ease;
+	}
+
+	[data-header-shadcn-line="top"] {
+		top: 0.25rem;
+	}
+
+	[data-header-shadcn-line="bottom"] {
+		top: 0.875rem;
+	}
+
+	[data-header-shadcn-toggle][data-state="open"] [data-header-shadcn-line="top"] {
+		top: 0.5625rem;
+		transform: rotate(45deg);
+	}
+
+	[data-header-shadcn-toggle][data-state="open"] [data-header-shadcn-line="bottom"] {
+		top: 0.5625rem;
+		transform: rotate(-45deg);
+	}
+</style>

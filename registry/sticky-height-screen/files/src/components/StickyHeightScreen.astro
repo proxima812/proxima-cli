@@ -1,0 +1,58 @@
+---
+const article =
+	"grid place-content-center text-white p-12 sticky h-[calc(100vh-20px)] top-[20px] rounded-3xl";
+---
+
+<main class="text-center relative out-size px-5">
+	<div class="list">
+		<section class="flex flex-col gap-[32px] text-xl md:text-4xl">
+			<article class={` bg-amber-500 ${article}`}>
+				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ullam blanditiis neque
+				doloribus atque id corporis, voluptate explicabo fuga necessitatibus aspernatur eaque,
+				ad facere sed suscipit vero laudantium expedita quidem? Veniam.
+			</article>
+			<article class={` bg-red-500 ${article}`}>
+				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ullam blanditiis neque
+				doloribus atque id corporis, voluptate explicabo fuga necessitatibus aspernatur eaque,
+				ad facere sed suscipit vero laudantium expedita quidem? Veniam.
+			</article>
+			<article class={` bg-blue-500 ${article}`}>
+				Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ullam blanditiis neque
+				doloribus atque id corporis, voluptate explicabo fuga necessitatibus aspernatur eaque,
+				ad facere sed suscipit vero laudantium expedita quidem? Veniam.
+			</article>
+		</section>
+	</div>
+</main>
+
+<style>
+	.list:before {
+		background-color: initial;
+		border-radius: 30px;
+		content: "";
+		height: 100%;
+		left: 50%;
+		position: absolute;
+		top: 0;
+		transform: translateX(-50vw);
+		width: 100vw;
+	}
+</style>
+
+<script>
+	import { animate, inView } from "motion";
+
+	// inView(
+	// 	"article",
+	// 	(target) => {
+	// 		animate(target, { scale: [0.97, 1] }, { duration: 0.3 });
+
+	// 		return () => {
+	// 			animate(target, { scale: [0.97, 1] }, { duration: 0.3 });
+	// 		};
+	// 	},
+	// 	{
+	// 		margin: "0px 0px -40% 0px",
+	// 	},
+	// );
+</script>

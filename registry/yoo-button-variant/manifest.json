@@ -1,0 +1,12 @@
+{
+  "name": "yoo-button-variant",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/YooButtonVariant.astro",
+      "target": "src/components/YooButtonVariant.astro"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

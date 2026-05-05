@@ -1,0 +1,12 @@
+{
+  "name": "yoo-num-stats",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/YooNumStats.astro",
+      "target": "src/components/YooNumStats.astro"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

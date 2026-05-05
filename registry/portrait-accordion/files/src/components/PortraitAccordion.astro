@@ -1,0 +1,198 @@
+---
+const people = [
+	{
+		name: "Sarah Johnson",
+		role: "Product Strategy Lead",
+		bio: "Visionary leader with 15+ years in tech innovation and product strategy. Sarah builds teams that ship products people remember.",
+		image:
+			"https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=1600&q=80",
+		accent: "rgba(244, 63, 94, 0.55)",
+	},
+	{
+		name: "Michael Chen",
+		role: "Principal Engineer",
+		bio: "Expert in scalable architecture and engineering execution. Michael has led platform teams powering products used by millions.",
+		image:
+			"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=1600&q=80",
+		accent: "rgba(59, 130, 246, 0.5)",
+	},
+	{
+		name: "Emily Rodriguez",
+		role: "Research Director",
+		bio: "Emily combines human-centered research with market insight to uncover opportunities and shape experiences that feel effortless.",
+		image:
+			"https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=1600&q=80",
+		accent: "rgba(234, 179, 8, 0.45)",
+	},
+	{
+		name: "David Thompson",
+		role: "Operations Architect",
+		bio: "David designs resilient operating systems for fast-moving teams, keeping delivery predictable while quality keeps rising.",
+		image:
+			"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1600&q=80",
+		accent: "rgba(14, 165, 233, 0.44)",
+	},
+	{
+		name: "Lisa Anderson",
+		role: "Creative Technologist",
+		bio: "Lisa bridges brand, interaction, and motion into expressive digital systems with a sharp eye for clarity and emotion.",
+		image:
+			"https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1600&q=80",
+		accent: "rgba(99, 102, 241, 0.5)",
+	},
+] as const;
+---
+
+<section
+	class="rounded-[2rem] border border-slate-400/20 bg-[radial-gradient(120%_120%_at_20%_10%,#111827_0%,#05070d_58%,#020409_100%)] p-6 shadow-[inset_0_1px_0_rgb(255_255_255/0.08),0_24px_64px_-40px_rgb(2_6_23/0.9)]"
+>
+	<div
+		class="portrait-accordion flex min-h-[34rem] gap-3 max-[960px]:min-h-[32rem] max-[960px]:flex-col"
+		data-portrait-accordion
+	>
+		{
+			people.map((person, index) => (
+				<button
+					type="button"
+					class:list={[
+						"portrait-panel relative overflow-hidden rounded-3xl border border-white/15 bg-cover bg-center text-left",
+						{ "is-active": index === 0 },
+					]}
+					data-panel
+					aria-expanded={index === 0 ? "true" : "false"}
+					style={`--panel-image:url('${person.image}');--panel-accent:${person.accent};`}
+				>
+					<div class="panel-fade absolute inset-0" />
+					<div class="panel-rail absolute bottom-[1.35rem] right-4 z-[2] origin-bottom-right">
+						<span>{person.name}</span>
+					</div>
+
+					<div class="panel-content absolute bottom-[2.15rem] left-10 right-10 z-[2] max-w-[36rem] text-slate-50 max-[960px]:bottom-[1.2rem] max-[960px]:left-[1.2rem] max-[960px]:right-[1.2rem]">
+						<h3 class="m-0 text-[clamp(2rem,3.1vw,3.7rem)] leading-[1.05] tracking-[-0.03em] max-[960px]:text-[clamp(1.7rem,8vw,2.55rem)]">
+							{person.name}
+						</h3>
+						<p class="panel-role m-0 mt-[0.7rem] text-[clamp(0.9rem,1.05vw,1.05rem)] font-[510] text-slate-200/95">
+							{person.role}
+						</p>
+						<p class="m-0 text-[clamp(1rem,1.36vw,1.9rem)] leading-[1.5] text-slate-200/90 max-[960px]:text-[clamp(0.95rem,4vw,1.15rem)]">
+							{person.bio}
+						</p>
+					</div>
+				</button>
+			))
+		}
+	</div>
+</section>
+
+<script>
+	const accordions = document.querySelectorAll("[data-portrait-accordion]");
+
+	for (const accordion of accordions) {
+		const panels = Array.from(accordion.querySelectorAll("[data-panel]"));
+		const setActive = (targetIndex) => {
+			panels.forEach((panel, index) => {
+				const isActive = index === targetIndex;
+				panel.classList.toggle("is-active", isActive);
+				panel.setAttribute("aria-expanded", String(isActive));
+			});
+		};
+
+		panels.forEach((panel, index) => {
+			panel.addEventListener("click", () => setActive(index));
+			panel.addEventListener("keydown", (event) => {
+				if (event.key === "Enter" || event.key === " ") {
+					event.preventDefault();
+					setActive(index);
+				}
+			});
+		});
+	}
+</script>
+
+<style>
+	.portrait-panel {
+		position: relative;
+		flex: 0 0 clamp(4.75rem, 8vw, 6rem);
+		background-image: var(--panel-image);
+		cursor: pointer;
+		transition:
+			flex-basis 700ms cubic-bezier(0.22, 0.61, 0.36, 1),
+			transform 300ms ease;
+	}
+
+	.portrait-panel:hover {
+		transform: translateY(-2px);
+	}
+
+	.portrait-panel.is-active {
+		flex-basis: clamp(19rem, 54vw, 47rem);
+	}
+
+	.panel-fade {
+		background:
+			linear-gradient(180deg, rgb(2 6 23 / 0.06) 14%, rgb(2 6 23 / 0.76) 82%),
+			radial-gradient(115% 120% at 10% 0%, var(--panel-accent) 0%, rgb(0 0 0 / 0) 56%);
+	}
+
+	.panel-rail {
+		transition:
+			opacity 260ms ease,
+			transform 360ms ease;
+	}
+
+	.panel-rail span {
+		display: inline-block;
+		color: rgb(255 255 255 / 0.96);
+		font-size: clamp(1rem, 1.2vw, 1.12rem);
+		font-weight: 520;
+		letter-spacing: 0.02em;
+		writing-mode: vertical-rl;
+		text-orientation: mixed;
+	}
+
+	.panel-content {
+		opacity: 0;
+		transform: translateY(18px);
+		transition:
+			opacity 420ms ease,
+			transform 460ms ease;
+	}
+
+	.portrait-panel.is-active .panel-content {
+		opacity: 1;
+		transform: translateY(0);
+		transition-delay: 130ms;
+	}
+
+	.portrait-panel.is-active .panel-rail {
+		opacity: 0;
+		transform: translateX(16px);
+	}
+
+	@media (max-width: 960px) {
+		.portrait-panel {
+			flex: 0 0 5.2rem;
+		}
+
+		.portrait-panel.is-active {
+			flex-basis: 23rem;
+		}
+
+		.panel-rail {
+			left: 1.15rem;
+			right: auto;
+			bottom: 1rem;
+		}
+
+		.panel-rail span {
+			writing-mode: horizontal-tb;
+			font-size: 1.05rem;
+		}
+
+		.panel-content {
+			left: 1rem;
+			right: 1rem;
+			bottom: 1rem;
+		}
+	}
+</style>

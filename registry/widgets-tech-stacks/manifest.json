@@ -1,0 +1,23 @@
+{
+  "name": "widgets-tech-stacks",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/widgets/TechStacks.astro",
+      "target": "src/components/widgets/TechStacks.astro"
+    },
+    {
+      "path": "src/components/widgets/stack-icons.ts",
+      "target": "src/components/widgets/stack-icons.ts"
+    }
+  ],
+  "dependencies": [
+    "@astrojs/react",
+    "react",
+    "react-dom"
+  ],
+  "devDependencies": [
+    "@types/react",
+    "@types/react-dom"
+  ]
+}

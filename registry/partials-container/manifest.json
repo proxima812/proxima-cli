@@ -1,0 +1,12 @@
+{
+  "name": "partials-container",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/partials/Container.astro",
+      "target": "src/components/partials/Container.astro"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

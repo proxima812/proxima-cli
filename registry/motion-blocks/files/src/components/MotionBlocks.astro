@@ -1,0 +1,16 @@
+---
+import Scene from "./MotionBlocks/Scene.astro";
+
+const blocks = ["v1", "v2", "v3", "v4", "v5", "v6", "v7", "v8", "v9", "v10", "v11"];
+---
+
+<section class="mx-auto w-full max-w-6xl">
+	{
+		blocks &&
+			blocks.map((item: any) => (
+				<div class="h-screen grid place-content-center">
+					<Scene variant={item} />
+				</div>
+			))
+	}
+</section>

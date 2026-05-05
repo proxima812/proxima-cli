@@ -1,0 +1,14 @@
+{
+  "name": "scroll-top-button",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/ScrollTopButton.astro",
+      "target": "src/components/ScrollTopButton.astro"
+    }
+  ],
+  "dependencies": [
+    "astro-icon"
+  ],
+  "devDependencies": []
+}

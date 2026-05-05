@@ -1,0 +1,12 @@
+{
+  "name": "sticky-list-effects-sticky-list-scroll-story",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/StickyListEffects/StickyListScrollStory.astro",
+      "target": "src/components/StickyListEffects/StickyListScrollStory.astro"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

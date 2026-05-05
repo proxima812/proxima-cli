@@ -1,0 +1,20 @@
+{
+  "name": "seo-seo",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/SEO/SEO.astro",
+      "target": "src/components/SEO/SEO.astro"
+    },
+    {
+      "path": "src/components/SEO/Analytics/YandexMetrika.astro",
+      "target": "src/components/SEO/Analytics/YandexMetrika.astro"
+    },
+    {
+      "path": "src/main.ts",
+      "target": "src/main.ts"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

@@ -1,0 +1,113 @@
+---
+import { cn } from "@/lib/utils";
+import { resolveStackIcon } from "./stack-icons";
+
+type Size = "sm" | "md" | "lg";
+
+interface Props {
+	stacks?: string[];
+	class?: string;
+	itemClass?: string;
+	size?: Size;
+	iconOnly?: boolean;
+	wrap?: boolean;
+	gap?: string;
+}
+
+const sizeClasses: Record<Size, string> = {
+	sm: "min-h-9 gap-2 px-3 text-sm",
+	md: "min-h-10 gap-2.5 px-3.5 text-sm",
+	lg: "min-h-12 gap-3 px-4 text-base",
+};
+
+const iconSizes: Record<Size, string> = {
+	sm: "h-4 max-w-5",
+	md: "h-5 max-w-6",
+	lg: "h-6 max-w-7",
+};
+
+const iconOnlySizeClasses: Record<Size, string> = {
+	sm: "min-h-9 px-3",
+	md: "min-h-10 px-3.5",
+	lg: "min-h-12 px-4",
+};
+
+const iconOnlyImageClasses: Record<Size, string> = {
+	sm: "h-4",
+	md: "h-5",
+	lg: "h-6",
+};
+
+const {
+	stacks = [],
+	class: className = "",
+	itemClass = "",
+	size = "md",
+	iconOnly = false,
+	wrap = true,
+	gap = "0.75rem",
+} = Astro.props;
+
+const items = stacks.map((value) => ({
+	value,
+	icon: resolveStackIcon(value),
+}));
+---
+
+<div
+	class={cn(
+		"flex items-center",
+		wrap ? "flex-wrap" : "flex-nowrap overflow-x-auto",
+		className,
+	)}
+	style={`gap:${gap}`}
+>
+	{
+		items.map((item) =>
+			item.icon ? (
+				<a
+					href={item.icon.href}
+					target="_blank"
+					rel="noreferrer noopener"
+					class={cn(
+						"inline-flex shrink-0 items-center font-medium text-zinc-700 transition-opacity hover:opacity-80",
+						iconOnly
+							? iconOnlySizeClasses[size]
+							: "rounded-full border border-zinc-200 bg-white",
+						iconOnly ? "justify-center" : sizeClasses[size],
+						itemClass,
+					)}
+					title={`${item.icon.label} • ${item.icon.category}`}
+					aria-label={item.icon.label}
+				>
+					<img
+						src={item.icon.src}
+						alt=""
+						aria-hidden="true"
+						loading="lazy"
+						decoding="async"
+						class={cn(
+							"w-auto shrink-0 object-contain",
+							iconOnly ? iconOnlyImageClasses[size] : iconSizes[size],
+						)}
+					/>
+					{!iconOnly && <span class="leading-none">{item.icon.label}</span>}
+				</a>
+			) : (
+				<div
+					class={cn(
+						"inline-flex shrink-0 items-center font-medium text-zinc-700",
+						iconOnly
+							? iconOnlySizeClasses[size]
+							: "rounded-full border border-zinc-200 bg-white",
+						iconOnly ? "justify-center" : sizeClasses[size],
+						itemClass,
+					)}
+					title={item.value}
+				>
+					{!iconOnly && <span class="leading-none">{item.value}</span>}
+				</div>
+			),
+		)
+	}
+</div>

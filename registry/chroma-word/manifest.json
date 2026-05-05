@@ -1,0 +1,18 @@
+{
+  "name": "chroma-word",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/ChromaWord.astro",
+      "target": "src/components/ChromaWord.astro"
+    },
+    {
+      "path": "src/components/chroma.ts",
+      "target": "src/components/chroma.ts"
+    }
+  ],
+  "dependencies": [
+    "motion"
+  ],
+  "devDependencies": []
+}

@@ -1,0 +1,59 @@
+---
+import { cn } from "@/utils/lib/cn";
+import type { HTMLAttributes } from "astro/types";
+import { Icon } from "astro-icon/components";
+import {
+	SOCIAL_ICON_BY_NAME,
+	type SocialIconName,
+} from "./IconSocial.data";
+import { ICON_BASE_CLASS, ICON_SIZE_CLASS, type IconSize } from "./Icon.shared";
+
+type SocialView = {
+	aria: { "aria-hidden": "true" } | { role: "img"; "aria-label": string };
+	className: string;
+	entity: (typeof SOCIAL_ICON_BY_NAME)[SocialIconName];
+};
+
+export interface Props extends Omit<HTMLAttributes<"span">, "aria-hidden" | "aria-label" | "class" | "role"> {
+	icon: SocialIconName;
+	size?: IconSize;
+	label?: string;
+	decorative?: boolean;
+	class?: string;
+}
+
+const {
+	icon,
+	size = "sm",
+	label,
+	decorative,
+	class: className,
+	...attrs
+} = Astro.props as Props;
+
+const entity = SOCIAL_ICON_BY_NAME[icon];
+const isDecorative = decorative ?? !label;
+const socialView: SocialView = {
+	aria: isDecorative
+		? { "aria-hidden": "true" }
+		: { role: "img", "aria-label": label ?? entity.label },
+	className: cn(ICON_BASE_CLASS, ICON_SIZE_CLASS[size], className),
+	entity,
+};
+---
+
+{
+	socialView.entity.source.type === "svg" ? (
+		<span
+			{...attrs}
+			{...socialView.aria}
+			class={socialView.className}
+			data-icon={socialView.entity.name}
+			set:html={socialView.entity.source.value}
+		/>
+	) : (
+		<span {...attrs} {...socialView.aria} class={socialView.className} data-icon={socialView.entity.name}>
+			<Icon name={socialView.entity.source.value} class="size-full" aria-hidden="true" />
+		</span>
+	)
+}

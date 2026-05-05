@@ -1,0 +1,12 @@
+{
+  "name": "ui-link",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/ui/Link.astro",
+      "target": "src/components/ui/Link.astro"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

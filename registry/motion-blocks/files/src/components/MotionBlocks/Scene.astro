@@ -1,0 +1,239 @@
+---
+interface Props {
+	variant: "v1" | "v2" | "v3" | "v4" | "v5" | "v6" | "v7" | "v8" | "v9" | "v10" | "v11" | "v12";
+}
+
+const { variant } = Astro.props;
+
+const blocks = [
+	{
+		icon: "🌹",
+		bg: "bg-gradient-to-br from-indigo-600 via-blue-500 to-cyan-400",
+		text: "text-white",
+		glow: "rgba(56, 189, 248, 0.45)",
+	},
+	{
+		icon: "🌸",
+		bg: "bg-gradient-to-br from-violet-600 via-fuchsia-500 to-pink-400",
+		text: "text-white",
+		glow: "rgba(217, 70, 239, 0.48)",
+	},
+	{
+		icon: "🌼",
+		bg: "bg-gradient-to-br from-amber-100 via-yellow-50 to-white",
+		text: "text-slate-900",
+		glow: "rgba(250, 204, 21, 0.36)",
+	},
+	{
+		icon: "🌻",
+		bg: "bg-gradient-to-br from-emerald-300 via-teal-300 to-cyan-300",
+		text: "text-slate-900",
+		glow: "rgba(45, 212, 191, 0.45)",
+	},
+	{
+		icon: "🌷",
+		bg: "bg-gradient-to-br from-rose-500 via-red-500 to-orange-400",
+		text: "text-white",
+		glow: "rgba(244, 63, 94, 0.5)",
+	},
+	{
+		icon: "💐",
+		bg: "bg-gradient-to-br from-pink-500 via-rose-400 to-amber-300",
+		text: "text-white",
+		glow: "rgba(251, 113, 133, 0.44)",
+	},
+	{
+		icon: "ALL",
+		bg: "bg-[radial-gradient(125%_125%_at_100%_0%,#22d3ee_0%,#6366f1_40%,#ec4899_75%,#f97316_100%)]",
+		text: "text-white",
+		glow: "rgba(99, 102, 241, 0.55)",
+	},
+];
+---
+
+<div class:list={["loader", variant]}>
+	{
+		blocks.map((item, index) => (
+			<div
+				class:list={["blockName", item.bg, item.text]}
+				style={`--delay:${index * 0.14}s;--i:${index};--glow:${item.glow};`}
+			>
+				<span class="text-3xl leading-none">{item.icon}</span>
+			</div>
+		))
+	}
+</div>
+
+<style>
+	@reference "tailwindcss";
+
+	.loader {
+		@apply relative h-[200px] w-[200px];
+		perspective: 900px;
+	}
+
+	.blockName {
+		@apply absolute left-1/2 top-1/2 flex h-[60px] w-[60px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[12px] border border-white/70 font-bold opacity-0 ring-1 ring-white/20;
+		transform-origin: center;
+		box-shadow:
+			0 4px 10px rgb(0 0 0 / 0.14),
+			0 0 14px var(--glow),
+			inset 0 1px 0 rgb(255 255 255 / 0.35);
+	}
+
+	.loader.v1 .blockName {
+		animation: sceneOne 3.2s ease-in-out forwards, fadeIn 0.28s ease-out forwards, shadowFade 3.2s linear forwards;
+		animation-delay: var(--delay), var(--delay), var(--delay);
+	}
+
+	.loader.v2 .blockName {
+		animation: sceneTwo 3.4s ease-in-out forwards, fadeIn 0.28s ease-out forwards, shadowFade 3.4s linear forwards;
+		animation-delay: var(--delay), var(--delay), var(--delay);
+	}
+
+	.loader.v3 .blockName {
+		animation: sceneThree 3.1s ease-in-out forwards, fadeIn 0.28s ease-out forwards, shadowFade 3.1s linear forwards;
+		animation-delay: var(--delay), var(--delay), var(--delay);
+	}
+
+	.loader.v4 .blockName {
+		animation: sceneFour 3.5s ease-in-out forwards, fadeIn 0.28s ease-out forwards, shadowFade 3.5s linear forwards;
+		animation-delay: var(--delay), var(--delay), var(--delay);
+	}
+
+	.loader.v5 .blockName {
+		animation: sceneFive 3.25s ease-in-out forwards, fadeIn 0.28s ease-out forwards, shadowFade 3.25s linear forwards;
+		animation-delay: var(--delay), var(--delay), var(--delay);
+	}
+
+	.loader.v6 .blockName {
+		animation: sceneSix 3.35s ease-in-out forwards, fadeIn 0.28s ease-out forwards, shadowFade 3.35s linear forwards;
+		animation-delay: var(--delay), var(--delay), var(--delay);
+	}
+
+	.loader.v7 .blockName {
+		animation: sceneSeven 3.45s ease-in-out forwards, fadeIn 0.28s ease-out forwards, shadowFade 3.45s linear forwards;
+		animation-delay: var(--delay), var(--delay), var(--delay);
+	}
+
+	.loader.v8 .blockName {
+		animation: sceneEight 3.15s ease-in-out forwards, fadeIn 0.28s ease-out forwards, shadowFade 3.15s linear forwards;
+		animation-delay: var(--delay), var(--delay), var(--delay);
+	}
+
+	.loader.v9 .blockName {
+		animation: sceneNine 3.55s ease-in-out forwards, fadeIn 0.28s ease-out forwards, shadowFade 3.55s linear forwards;
+		animation-delay: var(--delay), var(--delay), var(--delay);
+	}
+
+	.loader.v10 .blockName {
+		animation: sceneTen 3.05s ease-in-out forwards, fadeIn 0.28s ease-out forwards, shadowFade 3.05s linear forwards;
+		animation-delay: var(--delay), var(--delay), var(--delay);
+	}
+
+	.loader.v11 .blockName {
+		animation: sceneEleven 3.6s ease-in-out forwards, fadeIn 0.28s ease-out forwards, shadowFade 3.6s linear forwards;
+		animation-delay: var(--delay), var(--delay), var(--delay);
+	}
+
+	.loader.v12 .blockName {
+		animation: sceneTwelve 3.3s ease-in-out forwards, fadeIn 0.28s ease-out forwards, shadowFade 3.3s linear forwards;
+		animation-delay: var(--delay), var(--delay), var(--delay);
+	}
+
+	@keyframes sceneOne {
+		0% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 50deg)) translateX(78px); }
+		55% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 50deg + 320deg)) translateX(78px); }
+		100% { transform: translate(-50%, -50%) scale(1.2); }
+	}
+
+	@keyframes sceneTwo {
+		0% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 48deg)) translateX(42px) translateY(-52px); }
+		45% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 48deg + 220deg)) translateX(82px) translateY(18px); }
+		100% { transform: translate(-50%, -50%) scale(1.18); }
+	}
+
+	@keyframes sceneThree {
+		0% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 51deg)) translateX(96px) scale(0.86); }
+		60% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 51deg + 400deg)) translateX(24px) scale(1.04); }
+		100% { transform: translate(-50%, -50%) scale(1.24); }
+	}
+
+	@keyframes sceneFour {
+		0% { transform: translate(-50%, -50%) scale(0.7); }
+		32% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 52deg)) translateX(94px) scale(1); }
+		66% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 52deg + 170deg)) translateX(60px) scale(1.03); }
+		100% { transform: translate(-50%, -50%) scale(1.22); }
+	}
+
+	@keyframes sceneFive {
+		0% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 52deg)) translateX(86px) translateY(-18px); }
+		35% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 52deg + 140deg)) translateX(46px) translateY(22px); }
+		70% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 52deg + 310deg)) translateX(88px) translateY(-10px); }
+		100% { transform: translate(-50%, -50%) scale(1.2); }
+	}
+
+	@keyframes sceneSix {
+		0% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 50deg)) translateX(74px) scale(0.95); }
+		40% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 50deg + 120deg)) translateX(96px) scale(1.02); }
+		75% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 50deg + 300deg)) translateX(34px) scale(1.03); }
+		100% { transform: translate(-50%, -50%) scale(1.18); }
+	}
+
+	@keyframes sceneSeven {
+		0% { transform: translate(-50%, -50%) translateX(0) translateY(0) scale(0.86); }
+		25% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 45deg)) translateX(84px) scale(1.02); }
+		60% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 45deg + 180deg)) translateX(84px) scale(1.02); }
+		100% { transform: translate(-50%, -50%) scale(1.22); }
+	}
+
+	@keyframes sceneEight {
+		0% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 50deg + 40deg)) translateX(68px) translateY(-26px); }
+		50% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 50deg + 390deg)) translateX(68px) translateY(22px); }
+		100% { transform: translate(-50%, -50%) scale(1.2); }
+	}
+
+	@keyframes sceneNine {
+		0% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 47deg)) translateX(98px) scale(0.84); }
+		35% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 47deg + 190deg)) translateX(52px) scale(1.02); }
+		70% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 47deg + 360deg)) translateX(98px) scale(1.02); }
+		100% { transform: translate(-50%, -50%) scale(1.25); }
+	}
+
+	@keyframes sceneTen {
+		0% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 52deg)) translateX(84px); }
+		45% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 52deg + 250deg)) translateX(84px) translateY(26px); }
+		80% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 52deg + 390deg)) translateX(40px); }
+		100% { transform: translate(-50%, -50%) scale(1.2); }
+	}
+
+	@keyframes sceneEleven {
+		0% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 51deg)) translateX(72px) scale(0.92); }
+		30% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 51deg + 120deg)) translateX(104px) scale(1.04); }
+		62% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 51deg + 280deg)) translateX(72px) scale(1); }
+		100% { transform: translate(-50%, -50%) scale(1.23); }
+	}
+
+	@keyframes sceneTwelve {
+		0% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 53deg)) translateX(92px) translateY(-12px); }
+		50% { transform: translate(-50%, -50%) rotate(calc(var(--i) * 53deg + 320deg)) translateX(46px) translateY(18px); }
+		100% { transform: translate(-50%, -50%) scale(1.2); }
+	}
+
+	@keyframes fadeIn {
+		to { opacity: 1; }
+	}
+
+	@keyframes shadowFade {
+		0%,
+		66% {
+			box-shadow:
+				0 4px 10px rgb(0 0 0 / 0.14),
+				0 0 14px var(--glow),
+				inset 0 1px 0 rgb(255 255 255 / 0.35);
+		}
+		100% {
+			box-shadow: 0 0 0 rgb(0 0 0 / 0);
+		}
+	}
+</style>

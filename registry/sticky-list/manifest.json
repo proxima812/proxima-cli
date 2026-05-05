@@ -1,0 +1,12 @@
+{
+  "name": "sticky-list",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/StickyList.astro",
+      "target": "src/components/StickyList.astro"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

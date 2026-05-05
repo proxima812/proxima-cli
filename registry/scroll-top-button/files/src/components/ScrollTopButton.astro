@@ -1,0 +1,80 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<button
+	type="button"
+	data-scroll-top
+	class="fixed bottom-6 right-5 z-40 inline-flex h-11 w-11 items-center justify-center rounded-full bg-zinc-950 text-white shadow-[0_14px_40px_-18px_rgba(0,0,0,0.45)] transition-[transform,opacity] duration-300 ease-out translate-x-[calc(100%+1.25rem)] opacity-0 pointer-events-none hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400"
+	aria-label="Наверх"
+	title="Наверх"
+>
+	<Icon name="mdi:arrow-up" class="text-lg" />
+</button>
+
+<script data-astro-exec>
+	const SHOW_RATIO = 0.5;
+	const HIDE_RATIO = 0.1;
+
+	document.querySelectorAll("[data-scroll-top]").forEach((button) => {
+		if (!(button instanceof HTMLButtonElement) || button.dataset.bound === "true") return;
+		button.dataset.bound = "true";
+
+		let isVisible = false;
+		let ticking = false;
+
+		const showButton = () => {
+			if (isVisible) return;
+			isVisible = true;
+			button.setAttribute("data-visible", "true");
+		};
+
+		const hideButton = () => {
+			if (!isVisible) return;
+			isVisible = false;
+			button.removeAttribute("data-visible");
+		};
+
+		const updateButton = () => {
+			const currentY = window.scrollY;
+			const scrollableHeight = Math.max(
+				document.documentElement.scrollHeight - window.innerHeight,
+				0,
+			);
+			const showThreshold = scrollableHeight * SHOW_RATIO;
+			const hideThreshold = scrollableHeight * HIDE_RATIO;
+
+			if (currentY <= hideThreshold) {
+				hideButton();
+			} else if (currentY >= showThreshold) {
+				showButton();
+			}
+
+			ticking = false;
+		};
+
+		const onScroll = () => {
+			if (ticking) return;
+			ticking = true;
+			window.requestAnimationFrame(updateButton);
+		};
+
+		button.addEventListener("click", () => {
+			window.scrollTo({ top: 0, behavior: "smooth" });
+			hideButton();
+		});
+
+		window.addEventListener("scroll", onScroll, { passive: true });
+		window.addEventListener("resize", onScroll, { passive: true });
+		updateButton();
+		document.addEventListener("astro:before-preparation", hideButton);
+	});
+</script>
+
+<style>
+	[data-scroll-top][data-visible="true"] {
+		transform: translateX(0);
+		opacity: 1;
+		pointer-events: auto;
+	}
+</style>

@@ -1,0 +1,14 @@
+{
+  "name": "colors",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/COLORS.astro",
+      "target": "src/components/COLORS.astro"
+    }
+  ],
+  "dependencies": [
+    "astro-icon"
+  ],
+  "devDependencies": []
+}

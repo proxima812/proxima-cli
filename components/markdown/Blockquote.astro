@@ -1,0 +1,18 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { cn } from "@/utils/lib/cn";
+
+interface Props extends HTMLAttributes<"blockquote"> {}
+
+const { class: className, ...props } = Astro.props;
+---
+
+<blockquote
+  {...props}
+  class={cn(
+    "my-6 border-l-4 border-zinc-300 pl-6 italic text-zinc-600",
+    className,
+  )}
+>
+  <slot />
+</blockquote>

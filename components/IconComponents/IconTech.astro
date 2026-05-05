@@ -1,0 +1,44 @@
+---
+import { cn } from "@/utils/lib/cn";
+import type { HTMLAttributes } from "astro/types";
+import { Icon } from "astro-icon/components";
+import { TECH_ICON_BY_NAME, type TechIconName } from "./IconTech.data";
+import { ICON_BASE_CLASS, ICON_SIZE_CLASS, type IconSize } from "./Icon.shared";
+
+type TechView = {
+	aria: { "aria-hidden": "true" } | { role: "img"; "aria-label": string };
+	className: string;
+	entity: (typeof TECH_ICON_BY_NAME)[TechIconName];
+};
+
+export interface Props extends Omit<HTMLAttributes<"span">, "aria-hidden" | "aria-label" | "class" | "role"> {
+	icon: TechIconName;
+	size?: IconSize;
+	label?: string;
+	decorative?: boolean;
+	class?: string;
+}
+
+const {
+	icon,
+	size = "sm",
+	label,
+	decorative,
+	class: className,
+	...attrs
+} = Astro.props as Props;
+
+const entity = TECH_ICON_BY_NAME[icon];
+const isDecorative = decorative ?? !label;
+const techView: TechView = {
+	aria: isDecorative
+		? { "aria-hidden": "true" }
+		: { role: "img", "aria-label": label ?? entity.label },
+	className: cn(ICON_BASE_CLASS, ICON_SIZE_CLASS[size], className),
+	entity,
+};
+---
+
+<span {...attrs} {...techView.aria} class={techView.className} data-icon={techView.entity.name}>
+	<Icon name={techView.entity.source.value} class="size-full" aria-hidden="true" />
+</span>

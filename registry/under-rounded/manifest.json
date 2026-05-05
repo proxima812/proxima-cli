@@ -1,0 +1,12 @@
+{
+  "name": "under-rounded",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/UnderRounded.astro",
+      "target": "src/components/UnderRounded.astro"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

@@ -1,0 +1,346 @@
+---
+import type { ChromaPreset, SweepFrom } from "./chroma";
+import { chromaPositions, chromaPresets } from "./chroma";
+
+type Props = {
+	words: string[];
+	before?: string;
+	after?: string;
+	from?: SweepFrom;
+	preset?: ChromaPreset;
+	motionPreset?: "gentle" | "soft" | "glide" | "swift" | "focus";
+	interval?: number;
+	gap?: string;
+	shiftScale?: number;
+	wordDuration?: number;
+	sideDuration?: number;
+	widthDuration?: number;
+	wordStartOpacity?: number;
+	sideFadeOpacity?: number;
+	class?: string;
+	wordClass?: string;
+};
+
+const motionPresets = {
+	gentle: {
+		gap: "0.08em",
+		shiftScale: 0.55,
+		wordDuration: 1080,
+		sideDuration: 1080,
+		widthDuration: 980,
+		wordStartOpacity: 0.78,
+		sideFadeOpacity: 0.9,
+		easing: "cubic-bezier(0.22, 0.61, 0.36, 1)",
+	},
+	soft: {
+		gap: "0.06em",
+		shiftScale: 0.42,
+		wordDuration: 1260,
+		sideDuration: 1260,
+		widthDuration: 1180,
+		wordStartOpacity: 0.82,
+		sideFadeOpacity: 0.94,
+		easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+	},
+	glide: {
+		gap: "0.07em",
+		shiftScale: 0.68,
+		wordDuration: 920,
+		sideDuration: 920,
+		widthDuration: 860,
+		wordStartOpacity: 0.72,
+		sideFadeOpacity: 0.88,
+		easing: "cubic-bezier(0.2, 0.8, 0.2, 1)",
+	},
+	swift: {
+		gap: "0.06em",
+		shiftScale: 0.82,
+		wordDuration: 760,
+		sideDuration: 760,
+		widthDuration: 720,
+		wordStartOpacity: 0.68,
+		sideFadeOpacity: 0.86,
+		easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+	},
+	focus: {
+		gap: "0.1em",
+		shiftScale: 0.32,
+		wordDuration: 1380,
+		sideDuration: 1380,
+		widthDuration: 1280,
+		wordStartOpacity: 0.86,
+		sideFadeOpacity: 0.96,
+		easing: "cubic-bezier(0.19, 1, 0.22, 1)",
+	},
+} as const;
+
+const {
+	words = [],
+	before = "",
+	after = "",
+	from = "left",
+	preset = "prism",
+	motionPreset = "gentle",
+	interval = 1800,
+	gap,
+	shiftScale,
+	wordDuration,
+	sideDuration,
+	widthDuration,
+	wordStartOpacity,
+	sideFadeOpacity,
+	class: className = "",
+	wordClass = "",
+} = Astro.props;
+
+const safeWords = words.length > 0 ? words : ["Интерактивный"];
+const longestWord = safeWords.reduce(
+	(longest, current) => (current.length > longest.length ? current : longest),
+	safeWords[0],
+);
+
+const activePreset = chromaPresets[preset] ?? chromaPresets.prism;
+const activePosition = chromaPositions[from] ?? chromaPositions.left;
+const activeMotionPreset = motionPresets[motionPreset] ?? motionPresets.gentle;
+
+const style = [
+	`--chroma-gradient: ${activePreset}`,
+	`--chroma-background-size: ${activePosition.size}`,
+	`--chroma-position-from: ${activePosition.from}`,
+	`--chroma-position-to: ${activePosition.to}`,
+	"--chroma-side-left-shift: 0px",
+	"--chroma-side-right-shift: 0px",
+	`--chroma-rotator-gap: ${gap ?? activeMotionPreset.gap}`,
+	`--chroma-shift-scale: ${shiftScale ?? activeMotionPreset.shiftScale}`,
+	`--chroma-word-duration: ${(wordDuration ?? activeMotionPreset.wordDuration)}ms`,
+	`--chroma-side-duration: ${(sideDuration ?? activeMotionPreset.sideDuration)}ms`,
+	`--chroma-width-duration: ${(widthDuration ?? activeMotionPreset.widthDuration)}ms`,
+	`--chroma-word-start-opacity: ${wordStartOpacity ?? activeMotionPreset.wordStartOpacity}`,
+	`--chroma-side-fade-opacity: ${sideFadeOpacity ?? activeMotionPreset.sideFadeOpacity}`,
+	`--chroma-motion-easing: ${activeMotionPreset.easing}`,
+].join(";");
+---
+
+<span
+	class={`chroma-rotator ${className}`.trim()}
+	data-chroma-rotator
+	data-words={JSON.stringify(safeWords)}
+	data-interval={String(interval)}
+	style={style}
+>
+	{before && <span class="chroma-rotator-side chroma-rotator-side-left" data-chroma-rotator-before>{before}</span>}
+	<span class="chroma-rotator-slot" data-chroma-rotator-slot aria-live="polite">
+		<span class="chroma-rotator-sizer" data-chroma-rotator-measure>{longestWord}</span>
+		<span class={`chroma-rotator-word chroma-rotator-word-animate ${wordClass}`.trim()} data-chroma-rotator-word>
+			{safeWords[0]}
+		</span>
+	</span>
+	{after && <span class="chroma-rotator-side chroma-rotator-side-right" data-chroma-rotator-after>{after}</span>}
+</span>
+
+<script>
+	const roots = document.querySelectorAll("[data-chroma-rotator]");
+
+	for (const root of roots) {
+		if (!(root instanceof HTMLElement) || root.dataset.chromaRotatorReady === "true") {
+			continue;
+		}
+
+		root.dataset.chromaRotatorReady = "true";
+
+		const slotEl = root.querySelector("[data-chroma-rotator-slot]");
+		const measureEl = root.querySelector("[data-chroma-rotator-measure]");
+		const wordEl = root.querySelector("[data-chroma-rotator-word]");
+		const beforeEl = root.querySelector("[data-chroma-rotator-before]");
+		const afterEl = root.querySelector("[data-chroma-rotator-after]");
+		const words = JSON.parse(root.dataset.words || "[]");
+		const interval = Number(root.dataset.interval || "1800");
+		const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		let activeIndex = 0;
+
+		if (
+			!(slotEl instanceof HTMLElement) ||
+			!(measureEl instanceof HTMLElement) ||
+			!(wordEl instanceof HTMLElement) ||
+			!Array.isArray(words) ||
+			words.length < 2
+		) {
+			continue;
+		}
+
+		const measureWidth = (value) => {
+			measureEl.textContent = value;
+			return measureEl.getBoundingClientRect().width;
+		};
+
+		const animateSide = (element, className) => {
+			if (!(element instanceof HTMLElement) || reduceMotion) {
+				return;
+			}
+
+			element.classList.remove(className);
+			void element.offsetWidth;
+			element.classList.add(className);
+		};
+
+		slotEl.style.width = `${measureWidth(words[0])}px`;
+
+		const renderWord = (nextIndex) => {
+			const currentWidth = slotEl.getBoundingClientRect().width;
+			const nextWidth = measureWidth(words[nextIndex]);
+			const widthDelta = nextWidth - currentWidth;
+
+			activeIndex = nextIndex;
+			root.style.setProperty("--chroma-side-left-shift", `${widthDelta / -2}px`);
+			root.style.setProperty("--chroma-side-right-shift", `${widthDelta / 2}px`);
+
+			slotEl.style.width = `${currentWidth}px`;
+			wordEl.classList.remove("chroma-rotator-word-animate");
+
+			animateSide(beforeEl, "chroma-rotator-side-left-shift");
+			animateSide(afterEl, "chroma-rotator-side-right-shift");
+			wordEl.textContent = words[activeIndex];
+
+			void slotEl.offsetWidth;
+			void wordEl.offsetWidth;
+
+			slotEl.style.width = `${nextWidth}px`;
+			if (!reduceMotion) {
+				wordEl.classList.add("chroma-rotator-word-animate");
+			}
+		};
+
+		window.setInterval(() => {
+			const nextIndex = (activeIndex + 1) % words.length;
+			renderWord(nextIndex);
+		}, interval);
+	}
+</script>
+
+<style>
+	.chroma-rotator {
+		display: inline-flex;
+		align-items: baseline;
+		gap: var(--chroma-rotator-gap);
+	}
+
+	.chroma-rotator-side {
+		display: inline-block;
+		will-change: transform, opacity;
+	}
+
+	.chroma-rotator-slot {
+		position: relative;
+		display: inline-block;
+		vertical-align: baseline;
+		white-space: nowrap;
+		transition: width var(--chroma-width-duration) var(--chroma-motion-easing);
+	}
+
+	.chroma-rotator-sizer,
+	.chroma-rotator-word {
+		display: inline-block;
+		white-space: nowrap;
+	}
+
+	.chroma-rotator-sizer {
+		position: absolute;
+		inset: 0 auto auto 0;
+		visibility: hidden;
+		pointer-events: none;
+		user-select: none;
+	}
+
+	.chroma-rotator-word {
+		display: inline-block;
+		background-image: var(--chroma-gradient);
+		background-size: var(--chroma-background-size);
+		background-position: var(--chroma-position-from);
+		will-change: background-position, filter;
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
+		filter: blur(2px);
+		opacity: var(--chroma-word-start-opacity);
+	}
+
+	.chroma-rotator-word-animate {
+		animation: chroma-rotator-sweep var(--chroma-word-duration) var(--chroma-motion-easing) forwards;
+	}
+
+	.chroma-rotator-side-left-shift {
+		animation: chroma-rotator-side-left-shift var(--chroma-side-duration) var(--chroma-motion-easing);
+	}
+
+	.chroma-rotator-side-right-shift {
+		animation: chroma-rotator-side-right-shift var(--chroma-side-duration) var(--chroma-motion-easing);
+	}
+
+	@keyframes chroma-rotator-sweep {
+		0% {
+			background-position: var(--chroma-position-from);
+			filter: blur(2px);
+			opacity: var(--chroma-word-start-opacity);
+		}
+
+		55% {
+			opacity: 0.92;
+		}
+
+		100% {
+			background-position: var(--chroma-position-to);
+			filter: blur(0);
+			opacity: 1;
+		}
+	}
+
+	@keyframes chroma-rotator-side-left-shift {
+		0% {
+			transform: translateX(0);
+			opacity: 1;
+		}
+
+		30% {
+			transform: translateX(calc(var(--chroma-side-left-shift) * var(--chroma-shift-scale)));
+			opacity: var(--chroma-side-fade-opacity);
+		}
+
+		100% {
+			transform: translateX(0);
+			opacity: 1;
+		}
+	}
+
+	@keyframes chroma-rotator-side-right-shift {
+		0% {
+			transform: translateX(0);
+			opacity: 1;
+		}
+
+		30% {
+			transform: translateX(calc(var(--chroma-side-right-shift) * var(--chroma-shift-scale)));
+			opacity: var(--chroma-side-fade-opacity);
+		}
+
+		100% {
+			transform: translateX(0);
+			opacity: 1;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.chroma-rotator-word {
+			background-position: var(--chroma-position-to);
+			filter: none;
+		}
+
+		.chroma-rotator-word-animate {
+			animation: none;
+		}
+
+		.chroma-rotator-slot {
+			transition: none;
+		}
+	}
+</style>

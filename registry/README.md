@@ -17,11 +17,13 @@ registry/
 ```json
 {
   "name": "component-name",
+  "type": "component",
   "dependencies": ["package-name"],
+  "devDependencies": ["package-name"],
   "registryDependencies": ["another-component"],
   "files": [
     {
-      "source": "src/components/ui/Component.astro",
+      "path": "src/components/ui/Component.astro",
       "target": "src/components/ui/Component.astro"
     }
   ]

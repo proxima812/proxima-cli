@@ -1,0 +1,12 @@
+{
+  "name": "yoo-kassa-heading",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/YooKassaHeading.astro",
+      "target": "src/components/YooKassaHeading.astro"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

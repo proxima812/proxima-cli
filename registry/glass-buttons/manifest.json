@@ -1,0 +1,12 @@
+{
+  "name": "glass-buttons",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/GlassButtons.astro",
+      "target": "src/components/GlassButtons.astro"
+    }
+  ],
+  "dependencies": [],
+  "devDependencies": []
+}

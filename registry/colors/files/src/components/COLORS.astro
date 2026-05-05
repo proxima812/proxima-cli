@@ -1,0 +1,1262 @@
+---
+import { Icon } from "astro-icon/components";
+import fs from "node:fs";
+import path from "node:path";
+
+const colors = [
+	"neutral-soft",
+	"cool-milk",
+	"blue-haze",
+	"violet-mist",
+	"green-fog",
+	"glass-soft",
+	"glass-dark",
+	"hero-elegant",
+	"dawn-mint",
+	"rose-gold",
+	"aurora-lav",
+	"citrus-calm",
+	"night-silk",
+	"nebula-blush",
+	"cosmic-teal",
+	"supernova-amber",
+	"void-indigo",
+	"orion-green",
+	"quasar-fuchsia",
+	"meteor-rose",
+	"eclipse-cyan",
+	"galaxy-mauve",
+	"pulsar-lime",
+	"celestial-slate",
+	"starlight-gold",
+	"mesh-arctic-bloom",
+	"mesh-peach-wave",
+	"mesh-cobalt-flare",
+	"mesh-mint-velvet",
+	"mesh-amethyst-cloud",
+	"mesh-solar-pop",
+	"mesh-ruby-dusk",
+	"mesh-ocean-aurora",
+	"mesh-neon-limeade",
+	"mesh-midnight-plasma",
+	"glow-aurora-cyan",
+	"glow-violet-pulse",
+	"glow-ember-rose",
+	"glow-lime-spark",
+	"glow-cobalt-beam",
+	"glow-sunset-lava",
+	"glow-mint-plasma",
+	"glow-orchid-flash",
+	"glow-glacier-neon",
+	"glow-fuchsia-nova",
+	"border-mist-silver",
+	"border-frost-blue",
+	"border-velvet-lilac",
+	"border-mint-glass",
+	"border-peach-cream",
+	"border-rose-quartz",
+	"border-amber-haze",
+	"border-sky-pearl",
+	"border-slate-smoke",
+	"border-plum-ice",
+	"linear-aurora-path",
+	"linear-coral-breeze",
+	"linear-mint-slide",
+	"linear-indigo-rise",
+	"linear-sunset-tilt",
+	"linear-lime-drift",
+	"linear-cobalt-wash",
+	"linear-rose-beam",
+	"linear-arctic-glow",
+	"linear-amber-rush",
+	"radial-cyan-orb",
+	"radial-peach-core",
+	"radial-violet-halo",
+	"radial-mint-pulse",
+	"radial-sky-burst",
+	"radial-berry-aura",
+	"radial-gold-fade",
+	"radial-teal-sphere",
+	"radial-indigo-bloom",
+	"radial-rose-orbit",
+	"conic-prism-spin",
+	"conic-lagoon-turn",
+	"conic-lava-ring",
+	"conic-aurora-wheel",
+	"conic-citrus-sweep",
+	"conic-berry-vortex",
+	"conic-neon-disc",
+	"conic-slate-swirl",
+	"conic-tropic-loop",
+	"conic-solar-fan",
+	"repeating-linear-candy-stripe",
+	"repeating-linear-mint-lines",
+	"repeating-linear-cobalt-lattice",
+	"repeating-linear-sunset-bars",
+	"repeating-linear-violet-stitch",
+	"repeating-linear-arctic-track",
+	"repeating-linear-amber-mark",
+	"repeating-linear-rose-ribbon",
+	"repeating-linear-teal-code",
+	"repeating-linear-lime-grid",
+	"repeating-radial-cosmo-rings",
+	"repeating-radial-peach-target",
+	"repeating-radial-cyan-ripple",
+	"repeating-radial-violet-echo",
+	"repeating-radial-gold-wave",
+	"repeating-radial-lime-orbit",
+	"repeating-radial-ember-radar",
+	"repeating-radial-sky-sonar",
+	"repeating-radial-teal-pulse",
+	"repeating-radial-rose-radar",
+	"repeating-conic-prism-tick",
+	"repeating-conic-lagoon-dial",
+	"repeating-conic-lava-saw",
+	"repeating-conic-mint-clock",
+	"repeating-conic-violet-pin",
+	"repeating-conic-coral-sprocket",
+	"repeating-conic-cyan-gear",
+	"repeating-conic-amber-shard",
+	"repeating-conic-indigo-arc",
+	"repeating-conic-rose-flare",
+	"multi-stop-rainbow-soft",
+	"multi-stop-ocean-pop",
+	"multi-stop-berry-nebula",
+	"multi-stop-sunrise-layer",
+	"multi-stop-forest-stream",
+	"multi-stop-neon-garden",
+	"multi-stop-candy-cloud",
+	"multi-stop-aurora-stack",
+	"multi-stop-desert-haze",
+	"multi-stop-cosmic-ribbon",
+	"transparent-sky-wash",
+	"transparent-rose-mist",
+	"transparent-mint-veil",
+	"transparent-cobalt-fade",
+	"transparent-gold-breeze",
+	"transparent-violet-glass",
+	"transparent-coral-hush",
+	"transparent-lime-sheen",
+	"transparent-teal-air",
+	"transparent-berry-film",
+	"mesh-neo-cyanfield",
+	"mesh-neo-peachlight",
+	"mesh-neo-violetbay",
+	"mesh-neo-mintbloom",
+	"mesh-neo-cobaltmist",
+	"mesh-neo-amberwave",
+	"mesh-neo-rosegarden",
+	"mesh-neo-limeplasma",
+	"mesh-neo-tealstorm",
+	"mesh-neo-solarflux",
+	"noise-overlay-frost",
+	"noise-overlay-lagoon",
+	"noise-overlay-sunset",
+	"noise-overlay-orchid",
+	"noise-overlay-lime",
+	"noise-overlay-cobalt",
+	"noise-overlay-amber",
+	"noise-overlay-rose",
+	"noise-overlay-mint",
+	"noise-overlay-cosmic",
+	"femme-rose-velvet",
+	"femme-cherry-blush",
+	"femme-peony-dream",
+	"femme-lilac-muse",
+	"femme-orchid-silk",
+	"femme-lavender-glow",
+	"femme-berry-kiss",
+	"femme-coral-ribbon",
+	"femme-aurora-petal",
+	"femme-rosewater-mist",
+	"femme-mauve-satin",
+	"femme-fuchsia-flair",
+	"femme-plum-whisper",
+	"femme-powder-bloom",
+	"femme-pink-champagne",
+	"femme-sunset-macaroon",
+	"femme-cranberry-milk",
+	"femme-ruby-lace",
+	"femme-blush-cashmere",
+	"femme-violet-bonbon",
+	"femme-raspberry-cloud",
+	"femme-ballet-peach",
+	"femme-strawberry-cream",
+	"femme-magenta-breeze",
+	"femme-berry-sorbet",
+	"femme-candy-floss",
+	"femme-sakura-haze",
+	"femme-rose-quartz-pop",
+	"femme-cupid-sky",
+	"femme-petal-prism",
+	"femme-sugar-plum",
+	"femme-amethyst-petal",
+	"femme-watermelon-glam",
+	"femme-bubblegum-sheen",
+	"femme-rose-lipgloss",
+	"femme-dahlia-dust",
+	"femme-camellia-frost",
+	"femme-poppy-radiance",
+	"femme-lotus-luster",
+	"femme-ladyberry-wave",
+	"femme-moonberry-spark",
+	"femme-coraline-splash",
+	"femme-rosewood-aura",
+	"femme-vintage-blush",
+	"femme-pink-nebula",
+	"femme-fairy-berry",
+	"femme-velvet-dawn",
+	"femme-iris-couture",
+	"femme-jammy-rose",
+	"femme-soft-garnet",
+	"masc-carbon-steel",
+	"masc-midnight-drive",
+	"masc-graphite-rush",
+	"masc-ocean-force",
+	"masc-slate-pulse",
+	"masc-forest-core",
+	"masc-iron-moss",
+	"masc-denim-current",
+	"masc-cobalt-engine",
+	"masc-ember-smoke",
+	"masc-deep-olive",
+	"masc-thunder-ink",
+	"masc-arctic-forge",
+	"masc-teal-circuit",
+	"masc-brooklyn-night",
+	"masc-bourbon-wood",
+	"masc-titanium-blue",
+	"masc-asphalt-glow",
+	"masc-navy-signal",
+	"masc-cyber-khaki",
+	"masc-shadow-lime",
+	"masc-bronze-volt",
+	"masc-storm-jet",
+	"masc-petrol-wave",
+	"masc-obsidian-sky",
+	"masc-granite-echo",
+	"masc-gunmetal-rain",
+	"masc-baltic-wind",
+	"masc-pine-oxide",
+	"masc-copper-night",
+	"masc-ranger-green",
+	"masc-ice-steel",
+	"masc-aero-indigo",
+	"masc-marine-current",
+	"masc-urban-smoke",
+	"masc-dark-cyan-shift",
+	"masc-night-amber",
+	"masc-neon-asphalt",
+	"masc-fjord-shadow",
+	"masc-oxford-cobalt",
+	"masc-ironwood-flare",
+	"masc-voltage-denim",
+	"masc-hunter-slate",
+	"masc-atlas-teal",
+	"masc-charcoal-drift",
+	"masc-glacier-graphite",
+	"masc-evergreen-spark",
+	"masc-subzero-navy",
+	"masc-radar-blue",
+	"masc-shadow-bronze",
+	"flag-armenia",
+	"flag-austria",
+	"flag-belgium",
+	"flag-benin",
+	"flag-bolivia",
+	"flag-botswana",
+	"flag-bulgaria",
+	"flag-burkina-faso",
+	"flag-cameroon",
+	"flag-chad",
+	"flag-colombia",
+	"flag-croatia",
+	"flag-estonia",
+	"flag-france",
+	"flag-gabon",
+	"flag-georgia",
+	"flag-germany",
+	"flag-guinea",
+	"flag-guinea-bissau",
+	"flag-hungary",
+	"flag-indonesia",
+	"flag-ireland",
+	"flag-italy",
+	"flag-latvia",
+	"flag-lithuania",
+	"flag-luxembourg",
+	"flag-madagascar",
+	"flag-mali",
+	"flag-mauritius",
+	"flag-moldova",
+	"flag-monaco",
+	"flag-netherlands",
+	"flag-niger",
+	"flag-nigeria",
+	"flag-paraguay",
+	"flag-peru",
+	"flag-poland",
+	"flag-romania",
+	"flag-russia",
+	"flag-serbia",
+	"flag-sierra-leone",
+	"flag-slovakia",
+	"flag-slovenia",
+	"flag-thailand",
+	"flag-ukraine",
+	"flag-yemen",
+];
+
+const gradientsCssText = fs.readFileSync(
+	path.resolve(process.cwd(), "src/styles/gradients.css"),
+	"utf8",
+);
+
+function escapeRegExp(value) {
+	return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function getCssSnippetByClassName(className) {
+	const escapedClass = escapeRegExp(className);
+	const ruleRegex = new RegExp(
+		`(^|\\n)\\s*\\.${escapedClass}\\s*\\{([\\s\\S]*?)\\n\\s*\\}`,
+		"m",
+	);
+
+	const match = gradientsCssText.match(ruleRegex);
+	if (!match) return `.${className} {\n  /* style not found */\n}`;
+
+	return `.${className} {\n${match[2].trimEnd()}\n}`;
+}
+
+const cssSnippetMap = Object.fromEntries(
+	colors.map((name) => {
+		const className = `radial-${name}`;
+		return [className, getCssSnippetByClassName(className)];
+	}),
+);
+
+const lastUpdated = new Date("2026-05-01T05:43:00");
+const ruMonths = [
+	"янв.",
+	"февр.",
+	"мар.",
+	"апр.",
+	"мая",
+	"июн.",
+	"июл.",
+	"авг.",
+	"сент.",
+	"окт.",
+	"нояб.",
+	"дек.",
+];
+
+const lastUpdatedRu = `${String(lastUpdated.getDate()).padStart(2, "0")} ${
+	ruMonths[lastUpdated.getMonth()]
+} ${lastUpdated.getFullYear()} - ${String(lastUpdated.getHours()).padStart(
+	2,
+	"0",
+)}:${String(lastUpdated.getMinutes()).padStart(2, "0")}`;
+
+const enFormatter = new Intl.DateTimeFormat("en-US", {
+	month: "short",
+	day: "numeric",
+	year: "numeric",
+	hour: "numeric",
+	minute: "2-digit",
+	hour12: true,
+});
+const enParts = enFormatter.formatToParts(lastUpdated);
+const enGet = (type) => enParts.find((part) => part.type === type)?.value ?? "";
+const lastUpdatedEn = `${enGet("month")} ${enGet("day")}, ${enGet("year")} - ${enGet(
+	"hour",
+)}:${enGet("minute")} ${enGet("dayPeriod")}`;
+
+const lastUpdatedEs = new Intl.DateTimeFormat("es-ES", {
+	day: "2-digit",
+	month: "short",
+	year: "numeric",
+	hour: "2-digit",
+	minute: "2-digit",
+	hour12: false,
+})
+	.format(lastUpdated)
+	.replace(",", " -");
+
+const lastUpdatedZh = new Intl.DateTimeFormat("zh-CN", {
+	year: "numeric",
+	month: "2-digit",
+	day: "2-digit",
+	hour: "2-digit",
+	minute: "2-digit",
+	hour12: false,
+})
+	.format(lastUpdated)
+	.replace(/\//g, "-");
+
+const ttMonths = [
+	"гыйн.",
+	"февр.",
+	"март",
+	"апр.",
+	"май",
+	"июнь",
+	"июль",
+	"авг.",
+	"сент.",
+	"окт.",
+	"нояб.",
+	"дек.",
+];
+const kkMonths = [
+	"қаң.",
+	"ақп.",
+	"наур.",
+	"сәу.",
+	"мам.",
+	"маус.",
+	"шіл.",
+	"там.",
+	"қыр.",
+	"қаз.",
+	"қар.",
+	"жел.",
+];
+const ukMonths = [
+	"січ.",
+	"лют.",
+	"бер.",
+	"квіт.",
+	"трав.",
+	"черв.",
+	"лип.",
+	"серп.",
+	"вер.",
+	"жовт.",
+	"лист.",
+	"груд.",
+];
+
+const lastUpdatedTt = `${String(lastUpdated.getDate()).padStart(2, "0")} ${
+	ttMonths[lastUpdated.getMonth()]
+} ${lastUpdated.getFullYear()} - ${String(lastUpdated.getHours()).padStart(
+	2,
+	"0",
+)}:${String(lastUpdated.getMinutes()).padStart(2, "0")}`;
+
+const lastUpdatedKk = `${String(lastUpdated.getDate()).padStart(2, "0")} ${
+	kkMonths[lastUpdated.getMonth()]
+} ${lastUpdated.getFullYear()} - ${String(lastUpdated.getHours()).padStart(
+	2,
+	"0",
+)}:${String(lastUpdated.getMinutes()).padStart(2, "0")}`;
+
+const lastUpdatedUk = `${String(lastUpdated.getDate()).padStart(2, "0")} ${
+	ukMonths[lastUpdated.getMonth()]
+} ${lastUpdated.getFullYear()} - ${String(lastUpdated.getHours()).padStart(
+	2,
+	"0",
+)}:${String(lastUpdated.getMinutes()).padStart(2, "0")}`;
+
+const skipTokens = new Set([
+	"linear",
+	"radial",
+	"conic",
+	"repeating",
+	"multi",
+	"stop",
+	"transparent",
+	"mesh",
+	"neo",
+	"noise",
+	"overlay",
+	"femme",
+	"masc",
+	"border",
+	"glow",
+]);
+
+const hintMap = {
+	rose: "розы",
+	mint: "мяты",
+	blue: "синевы",
+	violet: "фиалки",
+	green: "зелени",
+	gold: "золота",
+	coral: "коралла",
+	cyan: "циана",
+	teal: "тила",
+	lime: "лайма",
+	amber: "янтаря",
+	berry: "ягод",
+	peach: "персика",
+	indigo: "индиго",
+	sky: "неба",
+	ocean: "океана",
+	arctic: "льда",
+	solar: "солнца",
+	cosmic: "космоса",
+	night: "ночи",
+	lavender: "лаванды",
+	orchid: "орхидеи",
+	fuchsia: "фуксии",
+	plum: "сливы",
+	cherry: "вишни",
+	sunset: "заката",
+	forest: "леса",
+	cobalt: "кобальта",
+	slate: "сланца",
+	graphite: "графита",
+	bronze: "бронзы",
+};
+
+const hintMapEn = {
+	rose: "rose",
+	mint: "mint",
+	blue: "blue",
+	violet: "violet",
+	green: "green",
+	gold: "gold",
+	coral: "coral",
+	cyan: "cyan",
+	teal: "teal",
+	lime: "lime",
+	amber: "amber",
+	berry: "berry",
+	peach: "peach",
+	indigo: "indigo",
+	sky: "sky",
+	ocean: "ocean",
+	arctic: "arctic",
+	solar: "solar",
+	cosmic: "cosmic",
+	night: "night",
+	lavender: "lavender",
+	orchid: "orchid",
+	fuchsia: "fuchsia",
+	plum: "plum",
+	cherry: "cherry",
+	sunset: "sunset",
+	forest: "forest",
+	cobalt: "cobalt",
+	slate: "slate",
+	graphite: "graphite",
+	bronze: "bronze",
+};
+
+const hintMapEs = {
+	rose: "rosa",
+	mint: "menta",
+	blue: "azul",
+	violet: "violeta",
+	green: "verde",
+	gold: "oro",
+	coral: "coral",
+	cyan: "cian",
+	teal: "turquesa",
+	lime: "lima",
+	amber: "ámbar",
+	berry: "bayas",
+	peach: "melocotón",
+	indigo: "índigo",
+	sky: "cielo",
+	ocean: "océano",
+	arctic: "ártico",
+	solar: "solar",
+	cosmic: "cósmico",
+	night: "noche",
+	lavender: "lavanda",
+	orchid: "orquídea",
+	fuchsia: "fucsia",
+	plum: "ciruela",
+	cherry: "cereza",
+	sunset: "atardecer",
+	forest: "bosque",
+	cobalt: "cobalto",
+	slate: "pizarra",
+	graphite: "grafito",
+	bronze: "bronce",
+};
+
+const hintMapZh = {
+	rose: "玫瑰",
+	mint: "薄荷",
+	blue: "蓝色",
+	violet: "紫罗兰",
+	green: "绿色",
+	gold: "金色",
+	coral: "珊瑚",
+	cyan: "青色",
+	teal: "蓝绿",
+	lime: "青柠",
+	amber: "琥珀",
+	berry: "莓果",
+	peach: "蜜桃",
+	indigo: "靛蓝",
+	sky: "天空",
+	ocean: "海洋",
+	arctic: "北极",
+	solar: "日光",
+	cosmic: "宇宙",
+	night: "夜色",
+	lavender: "薰衣草",
+	orchid: "兰花",
+	fuchsia: "紫红",
+	plum: "李子",
+	cherry: "樱桃",
+	sunset: "日落",
+	forest: "森林",
+	cobalt: "钴蓝",
+	slate: "石板灰",
+	graphite: "石墨",
+	bronze: "青铜",
+};
+
+const hintMapUk = {
+	rose: "троянди",
+	mint: "м'яти",
+	blue: "синього",
+	violet: "фіалки",
+	green: "зелені",
+	gold: "золота",
+	coral: "коралу",
+	cyan: "ціану",
+	teal: "тілу",
+	lime: "лайму",
+	amber: "бурштину",
+	berry: "ягід",
+	peach: "персика",
+	indigo: "індиго",
+	sky: "неба",
+	ocean: "океану",
+	arctic: "льоду",
+	solar: "сонця",
+	cosmic: "космосу",
+	night: "ночі",
+	lavender: "лаванди",
+	orchid: "орхідеї",
+	fuchsia: "фуксії",
+	plum: "сливи",
+	cherry: "вишні",
+	sunset: "заходу",
+	forest: "лісу",
+	cobalt: "кобальту",
+	slate: "сланцю",
+	graphite: "графіту",
+	bronze: "бронзи",
+};
+
+const tones = [
+	"Спокойный градиент",
+	"Яркий градиент",
+	"Мягкий градиент",
+	"Глубокий градиент",
+	"Чистый градиент",
+	"Контрастный градиент",
+];
+
+const usages = [
+	"для кнопок и карточек",
+	"для hero и баннеров",
+	"для фоновых секций",
+	"для UI-акцентов",
+	"для промо-блоков",
+	"для строгого интерфейса",
+];
+
+const emojis = ["✨", "🌿", "🔥", "🌙", "💎", "⚡", "🎯", "🫧"];
+
+function getColorHint(name) {
+	const token = name.split("-").find((part) => !skipTokens.has(part) && hintMap[part]);
+
+	return token ? `с нотами ${hintMap[token]}` : "с мягким цветовым переходом";
+}
+
+function clampDescription(text) {
+	if (text.length < 20) return `${text} в современном стиле`;
+	if (text.length <= 70) return text;
+	const cut = text.slice(0, 70);
+	const lastSpace = cut.lastIndexOf(" ");
+	return `${(lastSpace === -1 ? cut : cut.slice(0, Math.max(lastSpace, 20))).trimEnd()}.`;
+}
+
+function getColorHintEn(name) {
+	const token = name.split("-").find((part) => !skipTokens.has(part) && hintMapEn[part]);
+
+	return token ? `with ${hintMapEn[token]} notes` : "with a soft color transition";
+}
+
+function getDescriptionRu(name, id) {
+	const tone = tones[id % tones.length];
+	const usage = usages[(id * 3 + 1) % usages.length];
+	const hint = getColorHint(name);
+	const emoji = id % 8 === 0 ? ` ${emojis[(id / 8) % emojis.length]}` : "";
+	return clampDescription(`${tone} ${hint} ${usage}${emoji}`);
+}
+
+const tonesEn = [
+	"Calm gradient",
+	"Vivid gradient",
+	"Soft gradient",
+	"Deep gradient",
+	"Clean gradient",
+	"Bold gradient",
+];
+
+const usagesEn = [
+	"for cards and buttons",
+	"for hero and banners",
+	"for background sections",
+	"for UI accents",
+	"for promo blocks",
+	"for strict interfaces",
+];
+
+function clampDescriptionEn(text) {
+	if (text.length < 20) return `${text} in a modern style`;
+	if (text.length <= 70) return text;
+	const cut = text.slice(0, 70);
+	const lastSpace = cut.lastIndexOf(" ");
+	return `${(lastSpace === -1 ? cut : cut.slice(0, Math.max(lastSpace, 20))).trimEnd()}.`;
+}
+
+function clampDescriptionGeneric(text, suffix) {
+	if (text.length < 20) return `${text} ${suffix}`;
+	if (text.length <= 70) return text;
+	const cut = text.slice(0, 70);
+	const lastSpace = cut.lastIndexOf(" ");
+	return `${(lastSpace === -1 ? cut : cut.slice(0, Math.max(lastSpace, 20))).trimEnd()}.`;
+}
+
+function getDescriptionEn(name, id) {
+	const tone = tonesEn[id % tonesEn.length];
+	const usage = usagesEn[(id * 3 + 1) % usagesEn.length];
+	const hint = getColorHintEn(name);
+	const emoji = id % 8 === 0 ? ` ${emojis[(id / 8) % emojis.length]}` : "";
+	return clampDescriptionEn(`${tone} ${hint} ${usage}${emoji}`);
+}
+
+const tonesEs = [
+	"Gradiente sereno",
+	"Gradiente vivo",
+	"Gradiente suave",
+	"Gradiente profundo",
+	"Gradiente limpio",
+	"Gradiente intenso",
+];
+const usagesEs = [
+	"para tarjetas y botones",
+	"para hero y banners",
+	"para secciones de fondo",
+	"para acentos de UI",
+	"para bloques promo",
+	"para interfaz elegante",
+];
+
+function getColorHintEs(name) {
+	const token = name.split("-").find((part) => !skipTokens.has(part) && hintMapEs[part]);
+	return token ? `con notas de ${hintMapEs[token]}` : "con transición de color suave";
+}
+
+function getDescriptionEs(name, id) {
+	const tone = tonesEs[id % tonesEs.length];
+	const usage = usagesEs[(id * 3 + 1) % usagesEs.length];
+	const hint = getColorHintEs(name);
+	const emoji = id % 8 === 0 ? ` ${emojis[(id / 8) % emojis.length]}` : "";
+	return clampDescriptionEn(`${tone} ${hint} ${usage}${emoji}`);
+}
+
+const tonesZh = ["平衡渐变", "明亮渐变", "柔和渐变", "深邃渐变", "纯净渐变", "鲜明渐变"];
+const usagesZh = [
+	"适合卡片与按钮",
+	"适合主视觉横幅",
+	"适合背景区块",
+	"适合界面点缀",
+	"适合推广模块",
+	"适合简洁界面",
+];
+
+function getColorHintZh(name) {
+	const token = name.split("-").find((part) => !skipTokens.has(part) && hintMapZh[part]);
+	return token ? `带有${hintMapZh[token]}气质` : "带有柔和色彩过渡";
+}
+
+function getDescriptionZh(name, id) {
+	const tone = tonesZh[id % tonesZh.length];
+	const usage = usagesZh[(id * 3 + 1) % usagesZh.length];
+	const hint = getColorHintZh(name);
+	const emoji = id % 8 === 0 ? ` ${emojis[(id / 8) % emojis.length]}` : "";
+	return clampDescriptionGeneric(`${tone}${hint}${usage}${emoji}`, "现代风格");
+}
+
+const tonesTt = [
+	"Тыныч градиент",
+	"Якты градиент",
+	"Йомшак градиент",
+	"Тирән градиент",
+	"Чиста градиент",
+	"Көчле градиент",
+];
+const usagesTt = [
+	"карточкалар һәм төймәләр өчен",
+	"hero һәм баннерлар өчен",
+	"фон блоклары өчен",
+	"UI акцентлары өчен",
+	"промо блоклар өчен",
+	"заманча интерфейс өчен",
+];
+
+function getDescriptionTt(name, id) {
+	const tone = tonesTt[id % tonesTt.length];
+	const usage = usagesTt[(id * 3 + 1) % usagesTt.length];
+	const hint = getColorHintEn(name);
+	const emoji = id % 8 === 0 ? ` ${emojis[(id / 8) % emojis.length]}` : "";
+	return clampDescriptionGeneric(`${tone} ${hint} ${usage}${emoji}`, "заманча стильдә");
+}
+
+const tonesKk = [
+	"Тынық градиент",
+	"Қанық градиент",
+	"Жұмсақ градиент",
+	"Терең градиент",
+	"Таза градиент",
+	"Айқын градиент",
+];
+const usagesKk = [
+	"карталар мен батырмаларға",
+	"hero және баннерлерге",
+	"фондық секциялар үшін",
+	"UI акценттері үшін",
+	"промо блоктар үшін",
+	"заманауи интерфейс үшін",
+];
+
+function getDescriptionKk(name, id) {
+	const tone = tonesKk[id % tonesKk.length];
+	const usage = usagesKk[(id * 3 + 1) % usagesKk.length];
+	const hint = getColorHintEn(name);
+	const emoji = id % 8 === 0 ? ` ${emojis[(id / 8) % emojis.length]}` : "";
+	return clampDescriptionGeneric(`${tone} ${hint} ${usage}${emoji}`, "заманауи стильде");
+}
+
+const tonesUk = [
+	"Спокійний градієнт",
+	"Яскравий градієнт",
+	"М'який градієнт",
+	"Глибокий градієнт",
+	"Чистий градієнт",
+	"Контрастний градієнт",
+];
+
+const usagesUk = [
+	"для карток і кнопок",
+	"для hero та банерів",
+	"для фонових секцій",
+	"для UI-акцентів",
+	"для промо-блоків",
+	"для стриманого інтерфейсу",
+];
+
+function getColorHintUk(name) {
+	const token = name.split("-").find((part) => !skipTokens.has(part) && hintMapUk[part]);
+	return token ? `з нотами ${hintMapUk[token]}` : "з м'яким переходом кольору";
+}
+
+function getDescriptionUk(name, id) {
+	const tone = tonesUk[id % tonesUk.length];
+	const usage = usagesUk[(id * 3 + 1) % usagesUk.length];
+	const hint = getColorHintUk(name);
+	const emoji = id % 8 === 0 ? ` ${emojis[(id / 8) % emojis.length]}` : "";
+	return clampDescription(`${tone} ${hint} ${usage}${emoji}`);
+}
+---
+
+<!--
+<span
+		class="relative inline-block
+bg-gradient-to-t from-white via-green-500 to-green-600
+bg-clip-text text-transparent
+before:absolute before:inset-0
+before:bg-gradient-to-b before:from-transparent before:via-green-500/30 before:to-green-600/60
+before:blur-2xl before:-z-10"
+		>Xima</span
+	>
+
+-->
+<div id="colors-language-component" data-lang="en">
+	<main>
+		<h1 class="text-5xl text-zinc-900 tracking-[-1.2px] leading-15">
+			<span class="lang-ru">XimaColor — градиенты, создающую атмосферу</span>
+			<span class="lang-en">XimaColor — gradients that vibe</span>
+			<span class="lang-es">XimaColor — gradientes que transmiten vibra</span>
+			<span class="lang-zh">XimaColor — 有氛围感的渐变色</span>
+			<span class="lang-tt">XimaColor — атмосфера тудыручы градиентлар</span>
+			<span class="lang-kk">XimaColor — көңіл күй беретін градиенттер</span>
+			<span class="lang-uk">XimaColor — градієнти, що задають настрій</span>
+		</h1>
+		<div
+			class="flex md:gap-3 flex-wrap gap-1.5 mb-24 items-center mt-6 text-xl text-zinc-400 md:leading-relaxed"
+		>
+			<span class="lang-ru"
+				>Более <span class="font-black text-zinc-900 tracking-tighter"
+					>{colors.length}
+				</span>цветовых блоков</span
+			>
+			<span class="lang-en"
+				>More than <span class="font-black text-zinc-900 tracking-tighter"
+					>{colors.length}</span
+				> blocks of colors</span
+			>
+			<span class="lang-es"
+				>Más de <span class="font-black text-zinc-900 tracking-tighter">{colors.length}</span>
+				bloques de color</span
+			>
+			<span class="lang-zh"
+				>超过 <span class="font-black text-zinc-900 tracking-tighter">{colors.length}</span>
+				个配色区块</span
+			>
+			<span class="lang-tt"
+				><span class="font-black text-zinc-900 tracking-tighter">{colors.length}</span> дән артык
+				төсләр блогы</span
+			>
+			<span class="lang-kk"
+				><span class="font-black text-zinc-900 tracking-tighter">{colors.length}</span>-ден аса
+				түсті блок</span
+			>
+			<span class="lang-uk"
+				>Більше <span class="font-black text-zinc-900 tracking-tighter">{colors.length}</span> кольоровий
+				блок</span
+			>
+			<span>⦁</span>
+			<span class="lang-ru">Блоки будут обновляться</span>
+			<span class="lang-en">The blocks will be updated</span>
+			<span class="lang-es">Los bloques se actualizarán</span>
+			<span class="lang-zh">这些区块会持续更新</span>
+			<span class="lang-tt">Блоклар даими яңартылачак</span>
+			<span class="lang-kk">Блоктар үнемі жаңартылып тұрады</span>
+			<span class="lang-uk">Блоки будуть оновлюватися</span>
+			<span>-</span>
+			<span class="lang-ru text-sm text-zinc-500">последнее обновление: {lastUpdatedRu}</span>
+			<span class="lang-en text-sm text-zinc-500">last update: {lastUpdatedEn}</span>
+			<span class="lang-es text-sm text-zinc-500">última actualización: {lastUpdatedEs}</span>
+			<span class="lang-zh text-sm text-zinc-500">最后更新：{lastUpdatedZh}</span>
+			<span class="lang-tt text-sm text-zinc-500">соңгы яңарту: {lastUpdatedTt}</span>
+			<span class="lang-kk text-sm text-zinc-500">соңғы жаңарту: {lastUpdatedKk}</span>
+			<span class="lang-uk text-sm text-zinc-500">останнє оновлення: {lastUpdatedUk}</span>
+		</div>
+	</main>
+
+	<section>
+		<div class="mb-12 flex-wrap flex items-center justify-between gap-3">
+			<div class="*:shrink-0 flex-wrap flex gap-2 items-center *:px-2.5 *:py-1 *:md:px-3 *:md:py-1.5">
+				<button
+					type="button"
+					class="cursor-pointer lang-toggle-btn rounded-full border border-zinc-300  text-xs text-zinc-700"
+					data-lang-btn="en"
+					aria-pressed="true">English</button
+				>
+				<button
+					type="button"
+					class="cursor-pointer lang-toggle-btn rounded-full border border-zinc-300 text-xs text-zinc-700"
+					data-lang-btn="ru"
+					aria-pressed="false">Русский</button
+				>
+				<button
+					type="button"
+					class="cursor-pointer lang-toggle-btn rounded-full border border-zinc-300 text-xs text-zinc-700"
+					data-lang-btn="es"
+					aria-pressed="false">Español</button
+				>
+				<button
+					type="button"
+					class="cursor-pointer lang-toggle-btn rounded-full border border-zinc-300 text-xs text-zinc-700"
+					data-lang-btn="zh"
+					aria-pressed="false">中文</button
+				>
+				<button
+					type="button"
+					class="cursor-pointer lang-toggle-btn rounded-full border border-zinc-300 text-xs text-zinc-700"
+					data-lang-btn="tt"
+					aria-pressed="false">Татарча</button
+				>
+				<button
+					type="button"
+					class="cursor-pointer lang-toggle-btn rounded-full border border-zinc-300 text-xs text-zinc-700"
+					data-lang-btn="kk"
+					aria-pressed="false">Қазақша</button
+				>
+				<button
+					type="button"
+					class="cursor-pointer lang-toggle-btn rounded-full border border-zinc-300 text-xs text-zinc-700"
+					data-lang-btn="uk"
+					aria-pressed="false">Українська</button
+				>
+			</div>
+			<div class="relative w-full">
+				<svg
+					class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400 z-10"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+				>
+					<path
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="m21 21-4.3-4.3m1.8-5.2a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"></path>
+				</svg>
+
+				<input
+					type="search"
+					placeholder="glow-glacier-neon..."
+					data-search-input
+					class="w-full pl-11 pr-4 py-2.5
+    bg-white/70 backdrop-blur-md
+    border border-zinc-200
+    rounded-full
+    text-zinc-700 placeholder:text-zinc-400
+    outline-none
+    focus:border-blue-500
+    focus:ring-4 focus:ring-blue-500/10
+    transition-all duration-200"
+				/>
+			</div>
+		</div>
+
+		<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-12">
+			{
+				colors.map((g, id) => (
+					<article
+						class="flex gap-6 items-center *:flex-1"
+						data-color-item
+						data-color-name={g.toLowerCase()}
+					>
+						<div>
+							<div class="text-zinc-500 flex justify-between items-center mb-2">
+								<span class="text-sm">{g}</span>
+								<span class="text-xs">id: {id + 1}</span>
+							</div>
+							<div
+								class={`radial-${g} rounded-3xl h-36 grid place-items-center ring-1 ring-black/5`}
+							/>
+						</div>
+						<div class="text-xs md:text-sm flex justify-between gap-2 flex-col h-full py-8 items-end text-zinc-500 leading-relaxed desc-text">
+							<span class="desc-ru">{getDescriptionRu(g, id)}</span>
+							<span class="desc-en">{getDescriptionEn(g, id)}</span>
+							<span class="desc-es">{getDescriptionEs(g, id)}</span>
+							<span class="desc-zh">{getDescriptionZh(g, id)}</span>
+							<span class="desc-tt">{getDescriptionTt(g, id)}</span>
+							<span class="desc-kk">{getDescriptionKk(g, id)}</span>
+							<span class="desc-uk">{getDescriptionUk(g, id)}</span>
+							<button
+								type="button"
+								class="copy-btn cursor-pointer ring-1 ring-inset ring-zinc-500/60 inline-flex gap-1.5 items-center px-3 py-2 rounded-md text-xs text-white bg-black"
+								data-copy-btn
+								data-copy-class={`radial-${g}`}
+							>
+								<span class="copy-btn-icon copy-btn-icon-copy">
+									<Icon name="mdi:content-copy" />
+								</span>
+								<span class="copy-btn-icon copy-btn-icon-check">
+									<Icon name="mdi:check-bold" />
+								</span>
+								<span class="copy-label copy-label-default-ru">Скопировать</span>
+								<span class="copy-label copy-label-default-en">Copy</span>
+								<span class="copy-label copy-label-default-es">Copiar</span>
+								<span class="copy-label copy-label-default-zh">复制</span>
+								<span class="copy-label copy-label-default-tt">Күчерү</span>
+								<span class="copy-label copy-label-default-kk">Көшіру</span>
+								<span class="copy-label copy-label-default-uk">Копіювати</span>
+								<span class="copy-label copy-label-copied-ru">Скопировано</span>
+								<span class="copy-label copy-label-copied-en">Copied</span>
+								<span class="copy-label copy-label-copied-es">Copiado</span>
+								<span class="copy-label copy-label-copied-zh">已复制</span>
+								<span class="copy-label copy-label-copied-tt">Күчерелде</span>
+								<span class="copy-label copy-label-copied-kk">Көшірілді</span>
+								<span class="copy-label copy-label-copied-uk">Скопійовано</span>
+							</button>
+						</div>
+					</article>
+				))
+			}
+		</div>
+	</section>
+</div>
+
+<style>
+	#colors-language-component .lang-ru,
+	#colors-language-component .lang-en,
+	#colors-language-component .lang-es,
+	#colors-language-component .lang-zh,
+	#colors-language-component .lang-tt,
+	#colors-language-component .lang-kk,
+	#colors-language-component .lang-uk {
+		display: none;
+	}
+
+	#colors-language-component[data-lang="ru"] .lang-ru,
+	#colors-language-component[data-lang="en"] .lang-en,
+	#colors-language-component[data-lang="es"] .lang-es,
+	#colors-language-component[data-lang="zh"] .lang-zh,
+	#colors-language-component[data-lang="tt"] .lang-tt,
+	#colors-language-component[data-lang="kk"] .lang-kk,
+	#colors-language-component[data-lang="uk"] .lang-uk {
+		display: inline;
+	}
+
+	#colors-language-component .desc-ru,
+	#colors-language-component .desc-en,
+	#colors-language-component .desc-es,
+	#colors-language-component .desc-zh,
+	#colors-language-component .desc-tt,
+	#colors-language-component .desc-kk,
+	#colors-language-component .desc-uk {
+		display: none;
+	}
+
+	#colors-language-component[data-lang="ru"] .desc-ru,
+	#colors-language-component[data-lang="en"] .desc-en,
+	#colors-language-component[data-lang="es"] .desc-es,
+	#colors-language-component[data-lang="zh"] .desc-zh,
+	#colors-language-component[data-lang="tt"] .desc-tt,
+	#colors-language-component[data-lang="kk"] .desc-kk,
+	#colors-language-component[data-lang="uk"] .desc-uk {
+		display: inline;
+	}
+
+	#colors-language-component .lang-toggle-btn[aria-pressed="true"] {
+		background: rgb(24 24 27);
+		border-color: rgb(24 24 27);
+		color: rgb(250 250 250);
+	}
+
+	#colors-language-component .copy-btn {
+		transition:
+			opacity 0.18s ease,
+			transform 0.18s ease;
+	}
+
+	#colors-language-component .copy-btn.is-copied {
+		opacity: 0.72;
+	}
+
+	#colors-language-component .copy-btn-icon-check,
+	#colors-language-component .copy-label {
+		display: none;
+	}
+
+	#colors-language-component .copy-btn.is-copied .copy-btn-icon-copy {
+		display: none;
+	}
+
+	#colors-language-component .copy-btn.is-copied .copy-btn-icon-check {
+		display: inline-flex;
+	}
+
+	#colors-language-component[data-lang="ru"] .copy-btn:not(.is-copied) .copy-label-default-ru,
+	#colors-language-component[data-lang="en"] .copy-btn:not(.is-copied) .copy-label-default-en,
+	#colors-language-component[data-lang="es"] .copy-btn:not(.is-copied) .copy-label-default-es,
+	#colors-language-component[data-lang="zh"] .copy-btn:not(.is-copied) .copy-label-default-zh,
+	#colors-language-component[data-lang="tt"] .copy-btn:not(.is-copied) .copy-label-default-tt,
+	#colors-language-component[data-lang="kk"] .copy-btn:not(.is-copied) .copy-label-default-kk,
+	#colors-language-component[data-lang="uk"] .copy-btn:not(.is-copied) .copy-label-default-uk {
+		display: inline;
+	}
+
+	#colors-language-component[data-lang="ru"] .copy-btn.is-copied .copy-label-copied-ru,
+	#colors-language-component[data-lang="en"] .copy-btn.is-copied .copy-label-copied-en,
+	#colors-language-component[data-lang="es"] .copy-btn.is-copied .copy-label-copied-es,
+	#colors-language-component[data-lang="zh"] .copy-btn.is-copied .copy-label-copied-zh,
+	#colors-language-component[data-lang="tt"] .copy-btn.is-copied .copy-label-copied-tt,
+	#colors-language-component[data-lang="kk"] .copy-btn.is-copied .copy-label-copied-kk,
+	#colors-language-component[data-lang="uk"] .copy-btn.is-copied .copy-label-copied-uk {
+		display: inline;
+	}
+</style>
+
+<script define:vars={{ cssSnippetMap }}>
+	const root = document.getElementById("colors-language-component");
+	const buttons = root?.querySelectorAll("[data-lang-btn]");
+
+	const LANG_STORAGE_KEY = "colors-component-lang";
+	const allowedLangs = new Set(["en", "ru", "es", "zh", "tt", "kk", "uk"]);
+
+	function applyLang(lang) {
+		if (!root || !allowedLangs.has(lang)) return;
+		root.setAttribute("data-lang", lang);
+		buttons?.forEach((btn) => {
+			const isActive = btn.getAttribute("data-lang-btn") === lang;
+			btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+		});
+	}
+
+	try {
+		const savedLang = localStorage.getItem(LANG_STORAGE_KEY);
+		if (savedLang && allowedLangs.has(savedLang)) applyLang(savedLang);
+	} catch {}
+
+	if (root && buttons?.length) {
+		buttons.forEach((button) => {
+			button.addEventListener("click", () => {
+				const lang = button.getAttribute("data-lang-btn");
+				if (!lang || !allowedLangs.has(lang)) return;
+				applyLang(lang);
+				try {
+					localStorage.setItem(LANG_STORAGE_KEY, lang);
+				} catch {}
+			});
+		});
+	}
+
+	const copyButtons = root?.querySelectorAll("[data-copy-btn]");
+	const searchInput = root?.querySelector("[data-search-input]");
+	const colorItems = root?.querySelectorAll("[data-color-item]");
+
+	if (searchInput && colorItems?.length) {
+		searchInput.addEventListener("input", () => {
+			const term = searchInput.value.trim().toLowerCase();
+			colorItems.forEach((item) => {
+				const name = item.getAttribute("data-color-name") ?? "";
+				const isVisible = term === "" || name.includes(term);
+				item.style.display = isVisible ? "" : "none";
+			});
+		});
+	}
+
+	async function copyTextToClipboard(value) {
+		try {
+			await navigator.clipboard.writeText(value);
+			return true;
+		} catch {
+			const textarea = document.createElement("textarea");
+			textarea.value = value;
+			textarea.style.position = "fixed";
+			textarea.style.left = "-9999px";
+			document.body.appendChild(textarea);
+			textarea.select();
+			const ok = document.execCommand("copy");
+			document.body.removeChild(textarea);
+			return ok;
+		}
+	}
+
+	if (copyButtons?.length) {
+		copyButtons.forEach((button) => {
+			button.addEventListener("click", async () => {
+				const className = button.getAttribute("data-copy-class");
+				if (!className) return;
+
+				const value = cssSnippetMap[className] ?? className;
+
+				const copied = await copyTextToClipboard(value);
+				if (!copied) return;
+
+				button.classList.add("is-copied");
+				window.setTimeout(() => {
+					button.classList.remove("is-copied");
+				}, 1500);
+			});
+		});
+	}
+</script>

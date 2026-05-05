@@ -1,0 +1,34 @@
+{
+  "name": "footers-footer-new1",
+  "type": "component",
+  "files": [
+    {
+      "path": "src/components/Footers/FooterNew1.astro",
+      "target": "src/components/Footers/FooterNew1.astro"
+    },
+    {
+      "path": "src/components/partials/BigWordBottom.astro",
+      "target": "src/components/partials/BigWordBottom.astro"
+    },
+    {
+      "path": "src/components/partials/Container.astro",
+      "target": "src/components/partials/Container.astro"
+    },
+    {
+      "path": "src/components/partials/Logo.astro",
+      "target": "src/components/partials/Logo.astro"
+    },
+    {
+      "path": "src/data/navigation_footer.ts",
+      "target": "src/data/navigation_footer.ts"
+    },
+    {
+      "path": "src/data/navigation.ts",
+      "target": "src/data/navigation.ts"
+    }
+  ],
+  "dependencies": [
+    "astro-icon"
+  ],
+  "devDependencies": []
+}
