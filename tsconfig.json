@@ -9,7 +9,6 @@
     "skipLibCheck": true,
     "declaration": true,
     "sourceMap": false,
-    "esModuleInterop": false,
     "forceConsistentCasingInFileNames": true
   },
   "include": ["src/**/*.ts"],
