@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
 import { runCli } from "../cli.js";
+import { nodeProcess } from "../utils/runtime.js";
 
-runCli(process.argv).catch((error: unknown) => {
+runCli(nodeProcess.argv).catch((error: unknown) => {
 	const message = error instanceof Error ? error.message : "Unknown error";
 	console.error(`[ui_proxima] ${message}`);
-	process.exit(1);
+	nodeProcess.exit(1);
 });

@@ -1,5 +1,8 @@
+// @ts-ignore Node built-in types may be unavailable in publish-only environments.
 import * as fs from "node:fs";
+// @ts-ignore Node built-in types may be unavailable in publish-only environments.
 import * as path from "node:path";
+// @ts-ignore Node built-in types may be unavailable in publish-only environments.
 import { fileURLToPath } from "node:url";
 
 import type { RegistryComponent, RegistryFile, RegistryManifest } from "../types.js";

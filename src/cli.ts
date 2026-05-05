@@ -2,6 +2,7 @@ import { runAdd } from "./commands/add.js";
 import { runInit } from "./commands/init.js";
 import { runList } from "./commands/list.js";
 import { runReset } from "./commands/reset.js";
+import { nodeProcess } from "./utils/runtime.js";
 
 const HELP_TEXT = `Usage:
   ui_proxima init
@@ -25,7 +26,7 @@ export const runCli = async (argv: string[]): Promise<void> => {
 
 	if (command === "init") {
 		await runInit({
-			cwd: process.cwd(),
+			cwd: nodeProcess.cwd(),
 			args,
 		});
 		return;
@@ -33,7 +34,7 @@ export const runCli = async (argv: string[]): Promise<void> => {
 
 	if (command === "add") {
 		await runAdd({
-			cwd: process.cwd(),
+			cwd: nodeProcess.cwd(),
 			args,
 		});
 		return;
@@ -41,7 +42,7 @@ export const runCli = async (argv: string[]): Promise<void> => {
 
 	if (command === "list") {
 		await runList({
-			cwd: process.cwd(),
+			cwd: nodeProcess.cwd(),
 			args,
 		});
 		return;
@@ -49,7 +50,7 @@ export const runCli = async (argv: string[]): Promise<void> => {
 
 	if (command === "reset") {
 		await runReset({
-			cwd: process.cwd(),
+			cwd: nodeProcess.cwd(),
 		});
 		return;
 	}

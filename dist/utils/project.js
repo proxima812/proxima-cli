@@ -1,4 +1,6 @@
+// @ts-ignore Node built-in types may be unavailable in publish-only environments.
 import * as fs from "node:fs";
+// @ts-ignore Node built-in types may be unavailable in publish-only environments.
 import * as path from "node:path";
 export const ensureAstroProject = (cwd) => {
     const packageJsonPath = path.join(cwd, "package.json");

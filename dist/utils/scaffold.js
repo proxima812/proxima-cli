@@ -1,4 +1,6 @@
+// @ts-ignore Node built-in types may be unavailable in publish-only environments.
 import * as fs from "node:fs";
+// @ts-ignore Node built-in types may be unavailable in publish-only environments.
 import * as path from "node:path";
 import { CN_TEMPLATE } from "../templates/cn.js";
 import { CONFIG_FILE_NAME } from "./config.js";

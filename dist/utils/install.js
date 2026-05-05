@@ -1,6 +1,10 @@
+// @ts-ignore Node built-in types may be unavailable in publish-only environments.
 import { spawn } from "node:child_process";
+// @ts-ignore Node built-in types may be unavailable in publish-only environments.
 import * as fs from "node:fs";
+// @ts-ignore Node built-in types may be unavailable in publish-only environments.
 import * as path from "node:path";
+import { nodeProcess } from "./runtime.js";
 const SPINNER_FRAMES = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
 const hasFile = (cwd, fileName) => fs.existsSync(path.join(cwd, fileName));
 const packageManagerArgs = (command, dev) => {
@@ -42,7 +46,7 @@ const readProjectDependencies = (cwd) => {
     };
 };
 const createSpinner = (label) => {
-    if (!process.stdout.isTTY) {
+    if (!nodeProcess.stdout.isTTY) {
         console.log(label);
         return {
             succeed(message) {
@@ -59,19 +63,19 @@ const createSpinner = (label) => {
     const red = "\x1b[1;31m";
     const reset = "\x1b[0m";
     let frameIndex = 0;
-    process.stdout.write(`  ${cyan}${SPINNER_FRAMES[frameIndex]}${reset} ${gray}${label}${reset}`);
+    nodeProcess.stdout.write(`  ${cyan}${SPINNER_FRAMES[frameIndex]}${reset} ${gray}${label}${reset}`);
     const timer = setInterval(() => {
         frameIndex = (frameIndex + 1) % SPINNER_FRAMES.length;
-        process.stdout.write(`\r  ${cyan}${SPINNER_FRAMES[frameIndex]}${reset} ${gray}${label}${reset}`);
+        nodeProcess.stdout.write(`\r  ${cyan}${SPINNER_FRAMES[frameIndex]}${reset} ${gray}${label}${reset}`);
     }, 80);
     return {
         succeed(message) {
             clearInterval(timer);
-            process.stdout.write(`\r  ${green}✓${reset} ${message}\n`);
+            nodeProcess.stdout.write(`\r  ${green}✓${reset} ${message}\n`);
         },
         fail(message) {
             clearInterval(timer);
-            process.stdout.write(`\r  ${red}✗${reset} ${red}${message}${reset}\n`);
+            nodeProcess.stdout.write(`\r  ${red}✗${reset} ${red}${message}${reset}\n`);
         },
     };
 };

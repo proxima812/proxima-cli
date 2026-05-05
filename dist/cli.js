@@ -2,6 +2,7 @@ import { runAdd } from "./commands/add.js";
 import { runInit } from "./commands/init.js";
 import { runList } from "./commands/list.js";
 import { runReset } from "./commands/reset.js";
+import { nodeProcess } from "./utils/runtime.js";
 const HELP_TEXT = `Usage:
   ui_proxima init
   ui_proxima add <name>
@@ -21,28 +22,28 @@ export const runCli = async (argv) => {
     }
     if (command === "init") {
         await runInit({
-            cwd: process.cwd(),
+            cwd: nodeProcess.cwd(),
             args,
         });
         return;
     }
     if (command === "add") {
         await runAdd({
-            cwd: process.cwd(),
+            cwd: nodeProcess.cwd(),
             args,
         });
         return;
     }
     if (command === "list") {
         await runList({
-            cwd: process.cwd(),
+            cwd: nodeProcess.cwd(),
             args,
         });
         return;
     }
     if (command === "reset") {
         await runReset({
-            cwd: process.cwd(),
+            cwd: nodeProcess.cwd(),
         });
         return;
     }

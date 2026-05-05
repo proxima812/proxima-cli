@@ -1,3 +1,5 @@
+import { nodeProcess } from "./runtime.js";
+
 const ANSI = {
 	reset: "\x1b[0m",
 	bold: "\x1b[1m",
@@ -17,7 +19,7 @@ const colorize = (text: string, ...styles: string[]): string => `${styles.join("
 
 export const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
-export const isInteractiveTerminal = (): boolean => Boolean(process.stdout.isTTY);
+export const isInteractiveTerminal = (): boolean => Boolean(nodeProcess.stdout.isTTY);
 
 // PROXIMA in 5-row pixel art — each pixel = "██", each empty = "  "
 // Letters: P(4px) R(4px) O(4px) X(5px) I(3px) M(5px) A(4px), 2px gaps, 2px leading indent
